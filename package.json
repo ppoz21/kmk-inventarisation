@@ -1,0 +1,42 @@
+{
+  "name": "kmk-serwis",
+  "version": "1.0.0",
+  "description": "Serwis inwentaryzacji modeli KMK Poznań",
+  "main": "js/main.js",
+  "scripts": {
+    "dev": "webpack --mode development --watch",
+    "build": "webpack --mode production --watch"
+  },
+  "author": "Paweł Palacz",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.15.5",
+    "@babel/plugin-proposal-class-properties": "^7.14.5",
+    "@babel/preset-env": "^7.15.4",
+    "autoprefixer": "^10.3.4",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.2.2",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "clean-webpack-plugin": "^4.0.0",
+    "css-loader": "^6.2.0",
+    "cssnano": "^5.0.8",
+    "mini-css-extract-plugin": "^2.2.2",
+    "node-sass": "^6.0.1",
+    "postcss-loader": "^6.1.1",
+    "sass-loader": "^12.1.0",
+    "style-loader": "^3.2.1",
+    "webpack": "^5.52.0",
+    "webpack-cli": "^4.8.0",
+    "webpack-notifier": "^1.13.0"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.4",
+    "bootstrap": "^4.6.0",
+    "jquery": "^3.6.0",
+    "jquery-ui": "^1.12.1",
+    "moment": "^2.29.1",
+    "select2": "^4.1.0-rc.0",
+    "sweetalert2": "^11.1.4"
+  }
+}

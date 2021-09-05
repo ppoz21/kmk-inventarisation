@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+
+{% set activeTrain = true %}
+
+{% block title %}Składy - {{ station.name }} - {{ parent() }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+<script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+
+<script>
+    $(function () {
+        $('#listaSkladow').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "autoWidth": false,
+            "responsive": true,
+            "language": {
+                "paginate": {
+                    "first": "Pierwsza",
+                    "last": "Ostatnia",
+                    "next": "Następna",
+                    "previous": "Poprzednia"
+                },
+                "info": "Wyniki od _START_ do _END_ z _TOTAL_"
+            }
+        });
+    });
+</script>
+
+{% endblock %}
+
+{% block content %}
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Składy - {{ station.name }}</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="{{ path('train_landing') }}">Składy</a></li>
+                            <li class="breadcrumb-item">Stacja {{ station.name }}</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <table id="listaSkladow" class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Lokomotywa</th>
+                                        <th>Malowanie</th>
+                                        <th>Wagony</th>
+                                        <th>Akcje</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% if station.trains|length < 1 %}
+                                        <tr>
+                                            <td colspan="4" class="text-center">Do stacji nie przypisano składów!</td>
+                                    {% else %}
+                                        {% for train in station.trains %}
+                                            <td>{{ loop.index }}</td>
+                                            <td>{{ train.locomotive.typeAndNumber }}</td>
+                                            <td>{{ train.locomotive.painting }}</td>
+                                            <td>
+                                                {% if train.cars | length < 1 %}
+                                                    Skład nie ma przypisanych wagonów!
+                                                {% else %}
+                                                <table class="table table-bordered table-hover">
+                                                    <tbody>
+
+                                                        {% for car in train.cars %}
+                                                            <tr>
+                                                                <td>{{ car.type }} {{ car.number }}</td>
+                                                                <td>{{ car.comments }}</td>
+                                                            </tr>
+                                                        {% endfor %}
+
+                                                    </tbody>
+                                                </table>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <a href="{{ path('train_details', {'id': train.id, 'slug': train.slug}) }}" class="text-danger"><i class="fas fa-eye"></i></a>
+                                            </td>
+                                        {% endfor %}
+                                    {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+        </section>
+    </div>
+{% endblock %}

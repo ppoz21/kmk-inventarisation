@@ -1,3 +1,82 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+index:
+    path: /
+    controller: App\Controller\MainController::mainAction
+
+# station
+
+station:
+    path: /stacje
+    controller: App\Controller\StationController::listAction
+
+station_details:
+    path: /stacje/{slug}-s{id}
+    controller: App\Controller\StationController::detailsAction
+    requirements:
+        slug: .*
+        id: \d+
+
+get_form_ajax:
+    path: /ajax/pobierz-formularz-stacji
+    controller: App\Controller\StationController::ajaxCreateFormAction
+    options:
+        expose: true
+
+
+add_station_ajax:
+    path: /ajax/dodaj-stacje
+    controller: App\Controller\StationController::ajaxAddStationAction
+    options:
+        expose: true
+
+# train
+
+train_landing:
+    path: /sklady
+    controller: App\Controller\TrainController::landingAction
+
+train_on_station:
+    path: /sklady/stacje/{slug}-s{id}
+    controller: App\Controller\TrainController::stationAction
+
+train_details:
+    path: /sklady/{slug}-sk-{id}
+    controller: App\Controller\TrainController::detailsAction
+    requirements:
+        slug: .*
+
+# todo list
+
+todo_list:
+    path: /do-zrobienia
+    controller: App\Controller\TodoController::listAction
+
+todo_list_ajax:
+    path: /do-zrobienia-ajax
+    controller: App\Controller\TodoController::changeStatus
+    options:
+        expose: true
+
+todo_list_user:
+    path: /do-zrobienia/{slug}-u{id}
+    controller: App\Controller\TodoController::listAction
+    requirements:
+        slug: .*
+        id: \d+
+
+# security
+
+app_login:
+    path: /zaloguj
+    controller: App\Controller\SecurityController::login
+
+app_logout:
+    path: /wyloguj
+    controller: App\Controller\SecurityController::logout
+
+forget_password:
+    path: /nie-pamietam-hasla
+    controller: App\Controller\SecurityController::forgetPassword
+
+reser_password:
+    path: /resetuj-haslo/{hash}
+    controller: App\Controller\SecurityController::forgetPassword

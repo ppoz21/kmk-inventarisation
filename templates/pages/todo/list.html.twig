@@ -1,0 +1,161 @@
+{% extends 'base.html.twig' %}
+
+{% set activeTodo = true %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        window.initTodoList()
+        window.initTodoPage()
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="content-wrapper">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Zadania do wykonania</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item {{ not other ? 'active' }}">Zadania do wykonania</li>
+                            {% if other %}
+                                <li class="breadcrumb-item active">{{ other }}</li>
+                            {% endif %}
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    {% if not is_granted('ROLE_PREZES') %}
+                        <div class="col-12">
+                            {% if not is_granted('ROLE_ADMIN') %}
+                                <div class="callout callout-danger">
+                                    <h5><i class="fas fa-info"></i> Uwaga:</h5>
+                                    Zadania oznaczone kolorem czerwonym są przydzielone przez Administratora. Nie mozesz oznaczyć ich jako wykonane!
+                                </div>
+                            {% endif %}
+
+                            <div class="row">
+                                <div class="card col-12">
+                                    <div class="card-header">
+                                        <h3 class="card-title">
+                                            <i class="fas fa-calendar-check mr-1"></i>
+                                            Do zrobienia
+                                        </h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="todo-list" data-widget="todo-list">
+                                            {% if todos | length < 1 %}
+                                                <span class="text-center">Brak zadań do wykonania!</span>
+                                            {% endif %}
+                                            {% for todo in todos %}
+                                                <li>
+                                                    {% if not todo.addedByAdmin or is_granted('ROLE_ADMIN') %}
+                                                        <div  class="icheck-danger d-inline ml-2">
+                                                            <input type="checkbox" value="" class="todo-element" name="todo{{ todo.id }}" id="todoCheck{{ todo.id }}" {{ todo.done?'checked' }} data-id="{{ todo.id }}">
+                                                            <label for="todoCheck{{ todo.id }}"></label>
+                                                        </div>
+                                                    {% else %}
+                                                        <div  class="icheck-danger d-inline ml-2">
+                                                            <input type="checkbox" value="" class="todo-element" name="todo{{ todo.id }}" id="todoCheck{{ todo.id }}" {{ todo.done?'checked' }} data-id="{{ todo.id }}" disabled>
+                                                            <label for="todoCheck{{ todo.id }}"></label>
+                                                        </div>
+                                                    {% endif %}
+
+                                                    <!-- todo text -->
+                                                    <span class="text {{ todo.addedByAdmin?'text-danger' }}">{{ todo.title }}</span>
+
+                                                    {% if todo.deadline %}
+                                                        <small class="badge badge-info"><i class="far fa-clock"></i> {{ todo.deadline | format_datetime('short', 'none', locale='pl') }}</small>
+                                                    {% endif %}
+
+                                                    <!-- General tools such as edit or delete-->
+                                                    <div class="tools">
+                                                        <a class="fas fa-eye show-task" data-title="{{ todo.title }}" data-description="{{ todo.description }}"></a>
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="card-footer clearfix">
+                                        <button type="button" class="btn btn-danger float-right add-task"><i class="fas fa-plus"></i> Dodaj zadanie</button>
+                                    </div>
+                                </div>
+                                <div class="card col-12">
+                                    <div class="card-header">
+                                        <h3 class="card-title">
+                                            <i class="fas fa-calendar-check mr-1"></i>
+                                            Wykonane
+                                        </h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="todo-list" data-widget="todo-list">
+                                            {% if done | length < 1 %}
+                                                <span class="text-center">Brak wykonanych zadań!</span>
+                                            {% endif %}
+                                            {% for todo in done %}
+                                                <li>
+                                                    <!-- checkbox -->
+                                                    {% if not todo.addedByAdmin or is_granted('ROLE_ADMIN') %}
+                                                    <div  class="icheck-danger d-inline ml-2">
+                                                        <input type="checkbox" value="" class="todo-element" name="todoDone{{ todo.id }}" id="todoCheckDone{{ todo.id }}" {{ todo.done?'checked' }} data-id="{{ todo.id }}">
+                                                        <label for="todoCheckDone{{ todo.id }}"></label>
+                                                    </div>
+                                                    {% else %}
+                                                        <div  class="icheck-danger d-inline ml-2">
+                                                            <input type="checkbox" value="" class="todo-element" name="todo{{ todo.id }}" id="todoCheck{{ todo.id }}" {{ todo.done?'checked' }} data-id="{{ todo.id }}" disabled>
+                                                            <label for="todoCheck{{ todo.id }}"></label>
+                                                        </div>
+                                                    {% endif %}
+                                                    <!-- todo text -->
+                                                    <span class="text {{ todo.addedByAdmin?'text-danger' }}">{{ todo.title }}</span>
+
+                                                    {% if todo.deadline %}
+                                                        <small class="badge badge-info"><i class="far fa-clock"></i> {{ todo.deadline | format_datetime('short', 'none', locale='pl') }}</small>
+                                                    {% endif %}
+
+                                                    <!-- General tools such as edit or delete-->
+                                                    <div class="tools">
+                                                        <i class="fas fa-eye show-task" data-title="{{ todo.title }}" data-description="{{ todo.description }}"></i>
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div><!-- /.col -->
+                    {% endif %}
+                    {% if is_granted('ROLE_PREZES') or is_granted('ROLE_ADMIN') %}
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="card col-12">
+                                    <div class="card-header">
+                                        <h3 class="card-title">
+                                            <i class="fas fa-calendar-check mr-1"></i>
+                                            Zadania narzucone
+                                        </h3>
+                                    </div>
+                                    <div class="card-body">
+                                        {{ render(controller('App\\Controller\\TodoController::adminTasks')) }}
+                                    </div>
+                                    <div class="card-footer clearfix">
+                                        <button type="button" class="btn btn-danger float-right add-task-admin"><i class="fas fa-plus"></i> Dodaj zadanie narzucone</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </section>
+    </div>
+{% endblock %}

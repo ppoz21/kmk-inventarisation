@@ -1,0 +1,29 @@
+{{ form_start(addForm) }}
+<div class="row">
+    <div class="col-12">
+        <div class"form-group">
+        <label>Nazwa stacji</label>
+    </div>
+    {{ form_widget(addForm.name, {attr: {'class': 'form-control', 'placeholder': 'Wpisz nazwę stacji', 'autocomplete': 'off'}}) }}
+</div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class"form-group">
+        <label>Opis stacji</label>
+    </div>
+    {{ form_widget(addForm.description, {attr: {'class': 'form-control', 'rows': '5'}}) }}
+</div>
+</div>
+<div class="row">
+    <div class="col-12 ">
+        <div class="form-group">
+            <label>Przypisani użytkownicy</label>
+            <div class="select2-danger">
+                {{ form_widget(addForm.users, {attr: {'class': 'select2', "data-placeholder": "Wybierz użytkowników", "data-dropdown-css-class": "select2-danger", "style": "width: 100%"}}) }}
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" name="api_key" id="api_key" value={{ app.user.apiKey }} />
+{{ form_end(addForm) }}

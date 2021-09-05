@@ -1,0 +1,31 @@
+<ul class="todo-list" data-widget="todo-list">
+    {% if admintasks | length < 1 %}
+        <span class="text-center">Brak zadań narzuconych!</span>
+    {% endif %}
+    {% for todo in admintasks %}
+        <li>
+            <!-- checkbox -->
+            <div  class="icheck-danger d-inline ml-2">
+                <input type="checkbox" value="" class="todo-element" name="todoDone{{ todo.id }}" id="todoCheckDone{{ todo.id }}" {{ todo.done?'checked' }} data-id="{{ todo.id }}">
+                <label for="todoCheckDone{{ todo.id }}"></label>
+            </div>
+            <!-- todo text -->
+            <span class="text {{ todo.addedByAdmin?'text-danger' }}">{{ todo.title }} </span>
+
+            {% if todo.deadline %}
+                <small class="badge badge-info"><i class="far fa-clock"></i> {{ todo.deadline | format_datetime('short', 'none', locale='pl') }}</small>
+            {% endif %}
+
+            <small class="badge badge-secondary"><i class="fas fa-users"></i>&nbsp;
+                {% for user in todo.user %}
+                    {{ user }}{% if not loop.last %},&nbsp;{% endif %}
+                {% endfor %}
+            </small>
+
+            <!-- General tools such as edit or delete-->
+            <div class="tools">
+                <i class="fas fa-eye show-task" data-title="{{ todo.title }}" data-description="{{ todo.description }}"></i>
+            </div>
+        </li>
+    {% endfor %}
+</ul>

@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% set activeTrain = true %}
+
+{% block title %}Składy - dostępne stacje - {{ parent() }}{% endblock %}
+
+{% block content %}
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Składy - dostępne stacje</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item">Składy</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+            {% for station in stations %}
+                <!-- Default box -->
+                <div class="col-lg-6 col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">{{ station.name }}</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-text">{{ station.description }}</div>
+                            <hr>
+                            <div class="card-text">
+                                Liczba składów: {{ station.trains | length }}
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <a href="{{ path('train_on_station', {'id': station.id, 'slug': station.slug}) }}" class="btn btn-danger col-12 col-lg-4 col-md-6 col-sm-12 mb-2">Przejdź do składów</a>
+                                <a href="{{ path('station_details', {'id': station.id, 'slug': station.slug}) }}" class="btn btn-secondary col-12 col-lg-4 col-md-6 col-sm-12 mb-2 ml-auto">Zobacz szczegóły stacji</a>
+
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                </div>
+                <!-- /.card -->
+            {% endfor %}
+            </div>
+
+        </section>
+
+    </div>
+{% endblock %}

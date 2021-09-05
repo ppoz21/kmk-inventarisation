@@ -1,0 +1,154 @@
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-danger elevation-4 sidebar-no-expand">
+    <!-- Brand Logo -->
+    <a href="{{ path('index') }}" class="brand-link navbar-danger">
+        <img src="{{ asset('images/logo.png') }}" alt="KMK Poznań" class="brand-image d-flex float-none">
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src="{{ asset('images/user/')~(app.user.profilePhoto?:'sample.png') }}" class="img-circle elevation-2" alt="profile photo" style="background-color: white;">
+            </div>
+            <div class="info">
+                <a href="javascript:void(0)" class="d-block">{{ app.user | upper }}</a>
+            </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
+                <!-- Add icons to the links using the .nav-icon class
+                     with font-awesome or any other icon font library -->
+                <li class="nav-item">
+                    <a href="{{ path('index') }}" class="nav-link {{ activeHomepage is defined ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-home"></i>
+                        <p>
+                            Strona główna
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('todo_list') }}" class="nav-link {{ activeTodo is defined ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-calendar-check"></i>
+                        <p>
+                            Zadania
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('train_landing') }}" class="nav-link {{ activeTrain is defined ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-subway"></i>
+                        <p>
+                            Składy
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('station') }}" class="nav-link {{ stacjeActive is defined ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-warehouse"></i>
+                        <p>
+                            Stacje
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:void(0)" class="nav-link">
+                        <i class="nav-icon fas fa-clipboard"></i>
+                        <p>
+                            Inwentaryzacja
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="javascript:void(0)" class="nav-link">
+                        <i class="nav-icon fas fa-train"></i>
+                        <p>
+                            Modele
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="javascript:void(0)" class="nav-link">
+                                <i class="fas fa-plus-square nav-icon"></i>
+                                <p>Dodaj model</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="javascript:void(0)" class="nav-link">
+                                <i class="far fa-edit nav-icon"></i>
+                                <p>Edytuj model</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:void(0)" class="nav-link">
+                        <i class="nav-icon fas fa-clipboard-list"></i>
+                        <p>
+                            Dokonane inwentaryzacje
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:void(0)" class="nav-link">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Ekipa makiety
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="javascript:void(0)" class="nav-link">
+                        <i class="nav-icon fas fa-user-cog"></i>
+                        <p>
+                            Administracja
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="javascript:void(0)" class="nav-link">
+                                <i class="fas fa-user-plus nav-icon"></i>
+                                <p>Dodaj użytkownika</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="javascript:void(0)" class="nav-link">
+                                <i class="fas fa-user-times nav-icon"></i>
+                                <p>Zablokuj użytkownika</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="javascript:void(0)" class="nav-link">
+                                <i class="fas fa-user-minus nav-icon"></i>
+                                <p>Usuń użytkownika</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:void(0)" class="nav-link">
+                        <i class="nav-icon fas fa-cogs"></i>
+                        <p>
+                            Ustawienia
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_logout') }}" class="nav-link">
+                        <i class="nav-icon fas fa-sign-out-alt"></i>
+                        <p>
+                            Wyloguj
+                        </p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>

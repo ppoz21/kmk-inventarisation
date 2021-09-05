@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% set unwrapped = true %}
+
+{% block title %}KMK | Logowanie{% endblock %}
+
+{% block header %}
+
+{% endblock %}
+
+{% block sidebar %}
+
+{% endblock %}
+
+{% block bodyclass %}class="hold-transition login-page"{% endblock %}
+
+{% block content %}
+
+<div class="login-box">
+
+    <div class="login-logo">
+        <a href="{{ path('index') }}"><b>KMK</b><br>Serwis inwentaryzacyjny</a>
+    </div>
+    <!-- /.login-logo -->
+    <div class="card">
+
+        <div class="card-body login-card-body">
+            <p class="login-box-msg">Zaloguj się do serwisu</p>
+
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') | replace({"Invalid credentials." : "Niepoprawne hasło!"}) }}</div>
+            {% endif %}
+
+            <form method="post">
+                <div class="input-group mb-3">
+                    <input type="email" class="form-control" placeholder="Adres e-mail" value="{{ last_username }}" name="email" required autofocus>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password" class="form-control" placeholder="Hasło" name="password" required>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" name="_csrf_token"
+                       value="{{ csrf_token('authenticate') }}"
+                >
+                <div class="row">
+                    <div class="col-8">
+                        <div class="icheck-primary icheck-danger">
+                            <input type="checkbox" id="remember_me" name="_remember_me">
+                            <label for="remember_me">
+                                Zapamiętaj moje dane
+                            </label>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-12 mt-3 mb-3">
+                        <button type="submit" class="btn btn-danger btn-block">Zaloguj się</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <div class="social-auth-links text-center mb-3">
+                <p>- LUB -</p>
+                <a href="#" class="btn btn-block btn-primary disabled">
+                    <i class="fab fa-facebook-f mr-2"></i> Zaloguj się przez Facebook
+                </a>
+                <a href="#" class="btn btn-block btn-danger disabled">
+                    <i class="fab fa-google mr-2"></i> Zaloguj się przez Google
+                </a>
+        </div>
+        <!-- /.social-auth-links -->
+            </form>
+
+
+            <p class="mb-1 text-center">
+                <a href="{{ path('forget_password') }}" class="text-danger">Nie pamiętam hasła</a>
+            </p>
+        </div>
+        <!-- /.login-card-body -->
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+
+{% endblock %}

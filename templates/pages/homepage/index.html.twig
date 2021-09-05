@@ -1,0 +1,174 @@
+{% extends 'base.html.twig' %}
+
+{% set activeHomepage = true %}
+
+{% block title %}Strona główna - {{ parent() }}{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        window.initTodoList()
+    </script>
+{% endblock %}
+
+{% block content %}
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">Strona główna</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item active">Strona główna</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <!-- Small boxes (Stat box) -->
+                <div class="row">
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-info">
+                            <div class="inner">
+                                <h3>{{ stationsCount }}</h3>
+
+                                <p>Stacje na Makiecie</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-warehouse"></i>
+                            </div>
+                            <a href="{{ path('station') }}" class="small-box-footer">Przejdź do stacji <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-success">
+                            <div class="inner">
+                                <h3>{{ trainsCount }}</h3>
+
+                                <p>Składy na makiecie</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-train"></i>
+                            </div>
+                            <a href="{{ path('train_landing') }}" class="small-box-footer">Przejdź do składów <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-warning">
+                            <div class="inner">
+                                <h3>{{ userCount }}</h3>
+
+                                <p>Obsługujących Makietę</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">Przejdź do Ekipy Makiety <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-danger">
+                            <div class="inner">
+                                <h3>0</h3>
+
+                                <p>Dokonanych inwentaryzacji</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-clipboard-list"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">Zobacz dokonane inwentaryzacje <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                </div>
+                <!-- /.row -->
+                <!-- Main row -->
+                <div class="row">
+                    <!-- Left col -->
+                    <section class="col-lg-7 connectedSortable">
+                        {% if not is_granted('ROLE_ADMIN') %}
+                            <div class="callout callout-danger">
+                                <h5><i class="fas fa-info"></i> Uwaga:</h5>
+                                Zadania oznaczone kolorem czerwonym są przydzielone przez Administratora. Nie mozesz oznaczyć ich jako wykonane!
+                            </div>
+                        {% endif %}
+                        <!-- TO DO List -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-calendar-check mr-1"></i>
+                                    Twoje zadania
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <ul class="todo-list" data-widget="todo-list">
+                                    {% if todos | length < 1 %}
+                                        <span class="text-center">Brak zadań do wykonania!</span>
+                                    {% endif %}
+                                    {% for todo in todos %}
+                                        <li>
+                                            <!-- todo text -->
+                                            <span class="text {{ todo.addedByAdmin?'text-danger' }}">{{ todo.title }}</span>
+
+                                            {% if todo.deadline %}
+                                                <small class="badge badge-info"><i class="far fa-clock"></i> {{ todo.deadline | format_datetime('short', 'none', locale='pl') }}</small>
+                                            {% endif %}
+
+                                            <!-- General tools such as edit or delete-->
+                                            <div class="tools">
+                                                <a class="fas fa-eye show-task" data-title="{{ todo.title }}" data-description="{{ todo.description }}"></a>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- /.card -->
+                    </section>
+                    <!-- /.Left col -->
+                    <!-- right col (We are only adding the ID to make the widgets sortable)-->
+                    <section class="col-lg-5 connectedSortable">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-id-badge mr-1"></i>
+                                    Twoje uprawnienia
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <p>
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci alias aperiam dignissimos dolorem error esse ex facere iste iure nihil obcaecati, perferendis quaerat recusandae reiciendis, saepe sint sit velit voluptas!
+                                    {% elseif is_granted('ROLE_PREZES') %}
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid aperiam asperiores assumenda beatae debitis eligendi ex exercitationem facere illo illum, laborum nisi quasi quisquam repudiandae, sed sequi sit vel voluptate!
+                                    {% else %}
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae blanditiis doloremque ea earum eligendi eveniet explicabo illum ipsum iure laborum necessitatibus nobis odio, officia quasi repellendus? Cupiditate iste odit reprehenderit?
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- right col -->
+                </div>
+                <!-- /.row (main row) -->
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+{% endblock %}
