@@ -1,18 +1,20 @@
 {{ form_start(addForm) }}
 <div class="row">
     <div class="col-12">
-        <div class"form-group">
+        <div class="form-group">
         <label>Nazwa stacji</label>
+            {{ form_widget(addForm.name, {attr: {'class': 'form-control', 'placeholder': 'Wpisz nazwę stacji', 'autocomplete': 'off'}}) }}
+        </div>
     </div>
-    {{ form_widget(addForm.name, {attr: {'class': 'form-control', 'placeholder': 'Wpisz nazwę stacji', 'autocomplete': 'off'}}) }}
 </div>
 </div>
 <div class="row">
     <div class="col-12">
-        <div class"form-group">
+        <div class="form-group">
         <label>Opis stacji</label>
+        {{ form_widget(addForm.description, {attr: {'class': 'form-control', 'rows': '5'}}) }}
+        </div>
     </div>
-    {{ form_widget(addForm.description, {attr: {'class': 'form-control', 'rows': '5'}}) }}
 </div>
 </div>
 <div class="row">

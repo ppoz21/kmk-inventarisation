@@ -1,0 +1,27 @@
+.todolist
+{
+
+  div#swal2-html-container {
+    display: flex !important;
+    flex-direction: column;
+  }
+
+  .swal2-progress-step {
+    background-color: #dc3545 !important;
+  }
+
+  .swal2-progress-steps {
+    .swal2-progress-step.swal2-active-progress-step ~ .swal2-progress-step {
+      background-color: lighten(#dc3545, 20) !important;
+    }
+
+    .swal2-progress-step-line {
+      background-color: #dc3545;
+    }
+
+    .swal2-progress-step.swal2-active-progress-step ~ .swal2-progress-step-line {
+      background-color: lighten(#dc3545, 20) !important;
+    }
+  }
+
+}

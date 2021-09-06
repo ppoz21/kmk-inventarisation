@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\ToDoList;
 use App\Entity\User;
+use App\Form\TodoAdminType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -50,52 +51,143 @@ class TodoController extends AbstractController
 
     public function changeStatus(Request $request): JsonResponse
     {
+        $out = [];
         $id = $request->get('id');
         $state = $request->get('state') == 'true';
-        $status = 500;
 
 
         $todo = $this->em->getRepository(ToDoList::class)->find($id);
 
         if ($todo)
         {
-            $todo->setDone($state);
-            $this->em->persist($todo);
-            $this->em->flush();
-            $status = 200;
+            try {
+                $todo->setDone($state);
+                $this->em->persist($todo);
+                $this->em->flush();
+                $out['ok'] = 'ok';
+            }
+            catch (\Exception $e)
+            {
+                $out['error'] = 'error';
+            }
         }
 
 
-        return new JsonResponse('', $status);
+        return new JsonResponse($out, Response::HTTP_OK);
     }
 
     public function hideTodo(Request $request): JsonResponse
     {
+        $out = [];
         $id = $request->get('id');
-        $status = 500;
 
         $todo = $this->em->getRepository(ToDoList::class)->find($id);
 
+
         if ($todo)
         {
-            $todo->setDisplay(false);
-            $this->em->persist($todo);
-            $this->em->flush();
-            $status = 200;
+            try {
+                $todo->setDisplay(false);
+                $this->em->persist($todo);
+                $this->em->flush();
+                $out['ok'] = 'ok';
+            }
+            catch (\Exception $e)
+            {
+                $out['error'] = 'emerror';
+            }
+
+        }
+        else
+        {
+            $out['error'] = 'noobj';
         }
 
 
-        return new JsonResponse('', $status);
+        return new JsonResponse($out, Response::HTTP_OK);
     }
 
     public function adminTasks(): Response
     {
 
-        $tasks = $this->em->getRepository(ToDoList::class)->findBy(['addedByAdmin' => true], ['deadline' => 'DESC']);
+        $tasks = $this->em->getRepository(ToDoList::class)->findBy(['addedByAdmin' => true, 'display' => true], ['deadline' => 'ASC']);
 
         return $this->render('parts/todo-admin-list/todo-admin-list.html.twig', [
             'admintasks' => $tasks
         ]);
+
+    }
+
+    public function addTask(Request $request): JsonResponse
+    {
+        $out = [];
+        $name = $request->get('name');
+        $description = $request->get('description');
+        $deadline = $request->get('deadline');
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        if ($deadline)
+        {
+            $deadlineObj = \DateTime::createFromFormat('Y-m-d', $deadline);
+        }
+        else
+        {
+            $deadlineObj = null;
+        }
+
+        $task = new ToDoList();
+
+        $descriptoion = trim($description);
+
+        try {
+            $task->setTitle($name);
+            $task->setDescription(strlen($descriptoion) != 0 ? $descriptoion : null);
+            $task->setDeadline($deadlineObj);
+            $task->addUser($user);
+
+            $this->em->persist($task);
+            $this->em->flush();
+            $out['ok'] = 'ok';
+        }
+        catch (\Exception $e)
+        {
+            $out['error'] = 'Błąd serwera!';
+        }
+
+        return new JsonResponse($out, Response::HTTP_OK);
+    }
+
+    public function addAdminTask(Request $request): JsonResponse
+    {
+        $out = [];
+
+        $task = new ToDoList();
+
+        $form = $this->createForm(TodoAdminType::class, $task);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            try {
+                $task->setAddedByAdmin(true);
+                $this->em->persist($task);
+                $this->em->flush();
+                $out['ok'] = 'ok';
+            }
+            catch (\Exception $e)
+            {
+                $out['error'] = 'emerror';
+            }
+        }
+
+        $out['html'] = $this->renderView('parts/todo-admin-form/todo-admin-form.html.twig', [
+            'form' => $form->createView()
+        ]);
+
+        return new JsonResponse($out, Response::HTTP_OK);
 
     }
 

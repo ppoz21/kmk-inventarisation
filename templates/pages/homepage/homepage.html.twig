@@ -34,70 +34,72 @@
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
-                <!-- Small boxes (Stat box) -->
-                <div class="row">
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-info">
-                            <div class="inner">
-                                <h3>{{ stationsCount }}</h3>
+                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_PREZES') %}
+                    <!-- Small boxes (Stat box) -->
+                    <div class="row">
+                        <div class="col-lg-3 col-6">
+                            <!-- small box -->
+                            <div class="small-box bg-info">
+                                <div class="inner">
+                                    <h3>{{ stationsCount }}</h3>
 
-                                <p>Stacje na Makiecie</p>
+                                    <p>Stacje na Makiecie</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-warehouse"></i>
+                                </div>
+                                <a href="{{ path('station') }}" class="small-box-footer">Przejdź do stacji <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
-                            <div class="icon">
-                                <i class="fas fa-warehouse"></i>
-                            </div>
-                            <a href="{{ path('station') }}" class="small-box-footer">Przejdź do stacji <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-success">
-                            <div class="inner">
-                                <h3>{{ trainsCount }}</h3>
+                        <!-- ./col -->
+                        <div class="col-lg-3 col-6">
+                            <!-- small box -->
+                            <div class="small-box bg-success">
+                                <div class="inner">
+                                    <h3>{{ trainsCount }}</h3>
 
-                                <p>Składy na makiecie</p>
+                                    <p>Składy na makiecie</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-train"></i>
+                                </div>
+                                <a href="{{ path('train_landing') }}" class="small-box-footer">Przejdź do składów <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
-                            <div class="icon">
-                                <i class="fas fa-train"></i>
-                            </div>
-                            <a href="{{ path('train_landing') }}" class="small-box-footer">Przejdź do składów <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-warning">
-                            <div class="inner">
-                                <h3>{{ userCount }}</h3>
+                        <!-- ./col -->
+                        <div class="col-lg-3 col-6">
+                            <!-- small box -->
+                            <div class="small-box bg-warning">
+                                <div class="inner">
+                                    <h3>{{ userCount }}</h3>
 
-                                <p>Obsługujących Makietę</p>
+                                    <p>Obsługujących Makietę</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <a href="#" class="small-box-footer">Przejdź do Ekipy Makiety <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
-                            <div class="icon">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">Przejdź do Ekipy Makiety <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-danger">
-                            <div class="inner">
-                                <h3>0</h3>
+                        <!-- ./col -->
+                        <div class="col-lg-3 col-6">
+                            <!-- small box -->
+                            <div class="small-box bg-danger">
+                                <div class="inner">
+                                    <h3>0</h3>
 
-                                <p>Dokonanych inwentaryzacji</p>
+                                    <p>Dokonanych inwentaryzacji</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-clipboard-list"></i>
+                                </div>
+                                <a href="#" class="small-box-footer">Zobacz dokonane inwentaryzacje <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
-                            <div class="icon">
-                                <i class="fas fa-clipboard-list"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">Zobacz dokonane inwentaryzacje <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
+                        <!-- ./col -->
                     </div>
-                    <!-- ./col -->
-                </div>
-                <!-- /.row -->
+                    <!-- /.row -->
+                {% endif %}
                 <!-- Main row -->
                 <div class="row">
                     <!-- Left col -->
@@ -130,9 +132,15 @@
                                                 <small class="badge badge-info"><i class="far fa-clock"></i> {{ todo.deadline | format_datetime('short', 'none', locale='pl') }}</small>
                                             {% endif %}
 
+                                            <small class="badge badge-secondary"><i class="fas fa-users"></i>&nbsp;
+                                                {% for user in todo.user %}
+                                                    {{ user }}{% if not loop.last %},&nbsp;{% endif %}
+                                                {% endfor %}
+                                            </small>
+
                                             <!-- General tools such as edit or delete-->
                                             <div class="tools">
-                                                <a class="fas fa-eye show-task" data-title="{{ todo.title }}" data-description="{{ todo.description }}"></a>
+                                                <a class="fas fa-eye show-task" data-title="{{ todo.title }}" data-description="{{ todo.description }}" title="Szczegóły"></a>
                                             </div>
                                         </li>
                                     {% endfor %}

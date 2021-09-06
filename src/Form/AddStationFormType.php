@@ -26,8 +26,7 @@ class AddStationFormType extends AbstractType
                 'label' => false,
                 'class' => User::class,
                 'multiple' => true,
-                'required' => false,
-                'placeholder' => 'XD'
+                'required' => false
             ])
         ;
     }

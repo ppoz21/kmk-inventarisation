@@ -24,7 +24,8 @@
 
             <!-- General tools such as edit or delete-->
             <div class="tools">
-                <i class="fas fa-eye show-task" data-title="{{ todo.title }}" data-description="{{ todo.description }}"></i>
+                <i class="fas fa-eye show-task" data-title="{{ todo.title }}" data-description="{{ todo.description }}" title="Szczegóły"></i>
+                <i class="fas fa-trash hide-task" data-id="{{ todo.id }}" title="Usuń"></i>
             </div>
         </li>
     {% endfor %}

@@ -42,12 +42,12 @@ class ToDoList
     /**
      * @ORM\Column(type="boolean")
      */
-    private $addedByAdmin;
+    private $addedByAdmin = false;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $done;
+    private $done = false;
 
     /**
      * @ORM\Column(type="boolean")

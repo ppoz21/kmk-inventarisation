@@ -44,14 +44,14 @@ train_details:
     requirements:
         slug: .*
 
-# todo list
+# todolist
 
 todo_list:
     path: /do-zrobienia
     controller: App\Controller\TodoController::listAction
 
 todo_list_ajax:
-    path: /do-zrobienia-ajax
+    path: /do-zrobienia/ajax/zmien-status
     controller: App\Controller\TodoController::changeStatus
     options:
         expose: true
@@ -62,6 +62,24 @@ todo_list_user:
     requirements:
         slug: .*
         id: \d+
+
+todo_list_add:
+    path: /do-zrobienia/ajax/dodaj
+    controller: App\Controller\TodoController::addTask
+    options:
+        expose: true
+
+todo_list_add_admin:
+    path: /do-zrobienia/ajax/administrator/dodaj
+    controller: App\Controller\TodoController::addAdminTask
+    options:
+        expose: true
+
+todo_list_hide:
+    path: /do-zrobienia/ajax/archiwizuj
+    controller: App\Controller\TodoController::hideTodo
+    options:
+        expose: true
 
 # security
 

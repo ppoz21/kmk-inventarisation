@@ -1,0 +1,46 @@
+{{ form_start(form, {'attr': {'id' : 'admin-task-form'}}) }}
+<div class="row">
+    <div class="col-12">
+        <div class="form-group">
+            <label>Nazwa zadania</label>
+            {{ form_widget(form.title, {attr: {'class': 'form-control', 'placeholder': 'Wpisz nazwę zadania', 'autocomplete': 'off'}}) }}
+            <small>
+                {% for error in form.title.vars.errors %}
+                    {{ error.message }}
+                {% endfor %}
+            </small>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="form-group">
+            <label>Opis zadania (opcjonalne)</label>
+            {{ form_widget(form.description, {attr: {'class': 'form-control', 'placeholder': 'Podaj opis zadania (opcjonalne)', 'autocomplete': 'off'}}) }}
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="form-group">
+            <label>Termin wykonania zadania (opcjonalne)</label>
+            {{ form_widget(form.deadline, {attr: {'class': 'form-control', 'placeholder': 'Wybierz termin zadania (opcjonalne)', 'autocomplete': 'off'}}) }}
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 ">
+        <div class="form-group">
+            <label>Przypisani użytkownicy</label>
+            <div class="select2-danger">
+                {{ form_widget(form.user, {attr: {'class': 'select2', "data-placeholder": "Wybierz użytkowników", "data-dropdown-css-class": "select2-danger", "style": "width: 100%"}}) }}
+            </div>
+            <small>
+                {% for error in form.user.vars.errors %}
+                    {{ error.message }}
+                {% endfor %}
+            </small>
+        </div>
+    </div>
+</div>
+{{ form_end(form) }}

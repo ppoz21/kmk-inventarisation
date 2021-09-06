@@ -2,6 +2,8 @@
 
 {% set activeTodo = true %}
 
+{% block bodyclass%}class="hold-transition sidebar-mini layout-fixed todolist"{% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
     <script>
@@ -9,6 +11,18 @@
         window.initTodoPage()
     </script>
 {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+    <style>
+        .select2-container--open {
+            z-index: 10000;
+        }
+    </style>
+{% endblock %}
+
 
 {% block title %}Zadania | {{ parent() }}{% endblock %}
 
@@ -78,9 +92,15 @@
                                                         <small class="badge badge-info"><i class="far fa-clock"></i> {{ todo.deadline | format_datetime('short', 'none', locale='pl') }}</small>
                                                     {% endif %}
 
+                                                    <small class="badge badge-secondary"><i class="fas fa-users"></i>&nbsp;
+                                                        {% for user in todo.user %}
+                                                            {{ user }}{% if not loop.last %},&nbsp;{% endif %}
+                                                        {% endfor %}
+                                                    </small>
+
                                                     <!-- General tools such as edit or delete-->
                                                     <div class="tools">
-                                                        <a class="fas fa-eye show-task" data-title="{{ todo.title }}" data-description="{{ todo.description }}"></a>
+                                                        <a class="fas fa-eye show-task" data-title="{{ todo.title }}" data-description="{{ todo.description }}" title="Szczegóły"></a>
                                                     </div>
                                                 </li>
                                             {% endfor %}
@@ -123,9 +143,18 @@
                                                         <small class="badge badge-info"><i class="far fa-clock"></i> {{ todo.deadline | format_datetime('short', 'none', locale='pl') }}</small>
                                                     {% endif %}
 
+                                                    <small class="badge badge-secondary"><i class="fas fa-users"></i>&nbsp;
+                                                        {% for user in todo.user %}
+                                                            {{ user }}{% if not loop.last %},&nbsp;{% endif %}
+                                                        {% endfor %}
+                                                    </small>
+
                                                     <!-- General tools such as edit or delete-->
                                                     <div class="tools">
-                                                        <i class="fas fa-eye show-task" data-title="{{ todo.title }}" data-description="{{ todo.description }}"></i>
+                                                        <i class="fas fa-eye show-task" data-title="{{ todo.title }}" data-description="{{ todo.description }}" title="Szczegóły"></i>
+                                                        {% if not todo.addedByAdmin %}
+                                                            <i class="fas fa-trash hide-task" data-id="{{ todo.id }}" title="Usuń"></i>
+                                                        {% endif %}
                                                     </div>
                                                 </li>
                                             {% endfor %}
@@ -143,14 +172,14 @@
                                     <div class="card-header">
                                         <h3 class="card-title">
                                             <i class="fas fa-calendar-check mr-1"></i>
-                                            Zadania narzucone
+                                            Zlecenia
                                         </h3>
                                     </div>
                                     <div class="card-body">
                                         {{ render(controller('App\\Controller\\TodoController::adminTasks')) }}
                                     </div>
                                     <div class="card-footer clearfix">
-                                        <button type="button" class="btn btn-danger float-right add-task-admin"><i class="fas fa-plus"></i> Dodaj zadanie narzucone</button>
+                                        <button type="button" class="btn btn-danger float-right add-task-admin"><i class="fas fa-plus"></i> Dodaj zlecenie</button>
                                     </div>
                                 </div>
                             </div>
