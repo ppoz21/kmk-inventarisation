@@ -81,6 +81,12 @@ todo_list_hide:
     options:
         expose: true
 
+# members
+
+members_list:
+    path: /czlonkowie-klubu
+    controller: App\Controller\MembersController::membersList
+
 # security
 
 app_login:

@@ -8,19 +8,19 @@ use App\Entity\Station;
 use App\Entity\ToDoList;
 use App\Entity\Train;
 use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
-class MainController extends AbstractController
+class MainController extends CommonController
 {
-    private EntityManagerInterface $em;
 
-    public function __construct(EntityManagerInterface $em)
-    {
-        $this->em = $em;
-    }
-
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
     public function mainAction(): Response {
         if (!$this->getUser())
         {
@@ -36,11 +36,11 @@ class MainController extends AbstractController
         $trains = count($this->em->getRepository(Train::class)->findAll());
         $users = count($this->em->getRepository(User::class)->findAll());
 
-        return $this->render('pages/homepage/homepage.html.twig', [
+        return new Response($this->twig->render('pages/homepage/homepage.html.twig', [
             'todos' => $todos,
             'stationsCount' => $stations,
             'trainsCount' => $trains,
             'userCount' => $users
-        ]);
+        ]));
     }
 }

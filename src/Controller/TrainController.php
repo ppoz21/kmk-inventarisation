@@ -5,22 +5,21 @@ namespace App\Controller;
 use App\Entity\Station;
 use App\Entity\Train;
 use App\Repository\StationRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
-class TrainController extends AbstractController
+class TrainController extends CommonController
 {
-    private EntityManagerInterface $em;
 
-    public function __construct(EntityManagerInterface $em)
-    {
-        $this->em = $em;
-    }
-
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
     public function landingAction(StationRepository $stationRepository): Response
     {
         if (count($stations = $this->getUser()->getStations()) == 1)
@@ -33,11 +32,17 @@ class TrainController extends AbstractController
         {
             $stations = $stationRepository->findAll();
         }
-        return $this->render('pages/train-landing/train-landing.html.twig', [
+
+        return new Response($this->twig->render('pages/train-landing/train-landing.html.twig', [
             'stations' => $stations,
-        ]);
+        ]));
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     public function stationAction($id = 0, $slug = null): Response
     {
         $station = $this->em->getRepository(Station::class)->find($id);
@@ -45,9 +50,9 @@ class TrainController extends AbstractController
         {
             if ($slug == $station->getSlug())
             {
-                return $this->render('pages/train-on-station/train-on-station.html.twig', [
+                return new Response($this->twig->render('pages/train-on-station/train-on-station.html.twig', [
                     'station' => $station,
-                ]);
+                ]));
             }
             else
             {
@@ -61,6 +66,11 @@ class TrainController extends AbstractController
         }
     }
 
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
     public function detailsAction($id = 0, $slug = null): Response
     {
         $train = $this->em->getRepository(Train::class)->find($id);
@@ -68,9 +78,9 @@ class TrainController extends AbstractController
         {
             if ($slug == $train->getSlug())
             {
-                return $this->render('pages/train-details/train-details.html.twig', [
+                return new Response($this->twig->render('pages/train-details/train-details.html.twig', [
                     'train' => $train,
-                ]);
+                ]));
             }
             else
             {

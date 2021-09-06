@@ -7,24 +7,22 @@ namespace App\Controller;
 use App\Entity\ToDoList;
 use App\Entity\User;
 use App\Form\TodoAdminType;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use function Symfony\Component\VarDumper\Dumper\esc;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
-class TodoController extends AbstractController
+class TodoController extends CommonController
 {
 
-    private EntityManagerInterface $em;
-
-    public function __construct(EntityManagerInterface $em)
-    {
-        $this->em = $em;
-    }
-
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     public function listAction(int $id = null, string $slug = null): Response
     {
         if (!$id)
@@ -42,11 +40,12 @@ class TodoController extends AbstractController
         }
         $todos = $this->em->getRepository(ToDoList::class)->findByUser($user, true, ['deadline' => 'ASC']);
         $done = $this->em->getRepository(ToDoList::class)->findByUser($user, false,  ['deadline' => 'ASC']);
-        return $this->render('pages/todo-list/todo-list.html.twig', [
+
+        return new Response($this->twig->render('pages/todo-list/todo-list.html.twig', [
             'todos' => $todos,
             'done' => $done,
             'other' => $other,
-        ]);
+        ]));
     }
 
     public function changeStatus(Request $request): JsonResponse
@@ -107,15 +106,19 @@ class TodoController extends AbstractController
         return new JsonResponse($out, Response::HTTP_OK);
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     public function adminTasks(): Response
     {
 
         $tasks = $this->em->getRepository(ToDoList::class)->findBy(['addedByAdmin' => true, 'display' => true], ['deadline' => 'ASC']);
 
-        return $this->render('parts/todo-admin-list/todo-admin-list.html.twig', [
+        return new Response($this->twig->render('parts/todo-admin-list/todo-admin-list.html.twig', [
             'admintasks' => $tasks
-        ]);
-
+        ]));
     }
 
     public function addTask(Request $request): JsonResponse

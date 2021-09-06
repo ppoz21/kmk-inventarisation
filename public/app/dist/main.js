@@ -15,7 +15,17 @@
   \************************************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("//parts\n__webpack_require__(/*! ./parts/todoList */ \"./assets/js/custom/parts/todoList.js\"); //pages\n\n\n__webpack_require__(/*! ./pages/todoPage */ \"./assets/js/custom/pages/todoPage.js\");\n\n__webpack_require__(/*! ./pages/trainOnStation */ \"./assets/js/custom/pages/trainOnStation.js\");\n\n__webpack_require__(/*! ./pages/stationList */ \"./assets/js/custom/pages/stationList.js\");\n\n//# sourceURL=webpack://kmk-serwis/./assets/js/custom/custom.js?");
+eval("//parts\n__webpack_require__(/*! ./parts/todoList */ \"./assets/js/custom/parts/todoList.js\"); //pages\n\n\n__webpack_require__(/*! ./pages/todoPage */ \"./assets/js/custom/pages/todoPage.js\");\n\n__webpack_require__(/*! ./pages/trainOnStation */ \"./assets/js/custom/pages/trainOnStation.js\");\n\n__webpack_require__(/*! ./pages/stationList */ \"./assets/js/custom/pages/stationList.js\");\n\n__webpack_require__(/*! ./pages/membersList */ \"./assets/js/custom/pages/membersList.js\");\n\n//# sourceURL=webpack://kmk-serwis/./assets/js/custom/custom.js?");
+
+/***/ }),
+
+/***/ "./assets/js/custom/pages/membersList.js":
+/*!***********************************************!*\
+  !*** ./assets/js/custom/pages/membersList.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+eval("/* provided dependency */ var $ = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\");\nconst membersList = () => {\n  $(() => {\n    $('#listaCzlonkow').DataTable({\n      \"paging\": true,\n      \"lengthChange\": false,\n      \"searching\": false,\n      \"ordering\": true,\n      \"autoWidth\": false,\n      \"responsive\": true,\n      \"language\": {\n        \"paginate\": {\n          \"first\": \"Pierwsza\",\n          \"last\": \"Ostatnia\",\n          \"next\": \"Następna\",\n          \"previous\": \"Poprzednia\"\n        },\n        \"info\": \"Wyniki od _START_ do _END_ z _TOTAL_\"\n      }\n    });\n  });\n};\n\nwindow.initMembersList = () => {\n  membersList();\n};\n\n//# sourceURL=webpack://kmk-serwis/./assets/js/custom/pages/membersList.js?");
 
 /***/ }),
 

@@ -1,0 +1,115 @@
+{% extends 'layout/main-layout.html.twig' %}
+
+{% set membersActive = true %}
+
+{% block title %}Członkowie Klubu | {{ parent() }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script>
+        window.initMembersList();
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="content-wrapper">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Członkowie Klubu</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item {{ other is not defined ? 'active' }}">Członkowie Klubu</li>
+                            {% if other is defined %}
+                                <li class="breadcrumb-item active">{{ other }}</li>
+                            {% endif %}
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="card col-12">
+                                <div class="card-header">
+                                    <h3 class="card-title">
+                                        <i class="fas fa-users mr-1"></i>
+                                        Członkowie Klubu
+                                    </h3>
+                                </div>
+                                <div class="card-body">
+                                    <table id="listaCzlonkow" class="table table-bordered table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Imię</th>
+                                            <th>Nazwisko</th>
+                                            <th>Adres e-mail</th>
+                                            <th>Numer telefonu</th>
+                                            <th>Przypisane stacje</th>
+                                            <th>Lista zadań</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% if members|length < 1 %}
+                                            <tr>
+                                                <td colspan="5" class="text-center">Nie znaleziono Członków Klubu</td>
+                                            </tr>
+                                        {% else %}
+                                            {% for member in members %}
+                                                <tr>
+                                                    <td>
+                                                        {{ loop.index }}
+                                                    </td>
+                                                    <td>
+                                                        {{ member.name }}
+                                                    </td>
+                                                    <td>
+                                                        {{ member.surname }}
+                                                    </td>
+                                                    <td>
+                                                        <a href="mailto:{{ member.email }}">{{ member.email }}</a>
+                                                    </td>
+                                                    <td>
+                                                        <a href="tel:{{ member.phone }}">{{ member.phone }}</a>
+                                                    </td>
+                                                    <td>
+                                                        {% for station in member.stations %}
+                                                            <a href="{{ path('station_details', {'id': station.id, 'slug': station.slug}) }}">{{ station.name }}</a>
+                                                            {% if not loop.last %}<br>{% endif %}
+                                                        {% else %}
+                                                            Brak przypisanych stacji!
+                                                        {% endfor %}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{ path('todo_list_user', {'id': member.id, 'slug': member.slug}) }}"><i class="fas fa-calendar-check"></i></a>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

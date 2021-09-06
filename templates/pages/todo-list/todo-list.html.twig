@@ -73,7 +73,7 @@
                                             {% endif %}
                                             {% for todo in todos %}
                                                 <li>
-                                                    {% if not todo.addedByAdmin or is_granted('ROLE_ADMIN') %}
+                                                    {% if (not todo.addedByAdmin or is_granted('ROLE_ADMIN')) and not other %}
                                                         <div  class="icheck-danger d-inline ml-2">
                                                             <input type="checkbox" value="" class="todo-element" name="todo{{ todo.id }}" id="todoCheck{{ todo.id }}" {{ todo.done?'checked' }} data-id="{{ todo.id }}">
                                                             <label for="todoCheck{{ todo.id }}"></label>
@@ -106,9 +106,11 @@
                                             {% endfor %}
                                         </ul>
                                     </div>
-                                    <div class="card-footer clearfix">
-                                        <button type="button" class="btn btn-danger float-right add-task"><i class="fas fa-plus"></i> Dodaj zadanie</button>
-                                    </div>
+                                    {% if not other %}
+                                        <div class="card-footer clearfix">
+                                            <button type="button" class="btn btn-danger float-right add-task"><i class="fas fa-plus"></i> Dodaj zadanie</button>
+                                        </div>
+                                    {% endif %}
                                 </div>
                                 <div class="card col-12">
                                     <div class="card-header">
@@ -125,7 +127,7 @@
                                             {% for todo in done %}
                                                 <li>
                                                     <!-- checkbox -->
-                                                    {% if not todo.addedByAdmin or is_granted('ROLE_ADMIN') %}
+                                                    {% if (not todo.addedByAdmin or is_granted('ROLE_ADMIN')) and not other %}
                                                     <div  class="icheck-danger d-inline ml-2">
                                                         <input type="checkbox" value="" class="todo-element" name="todoDone{{ todo.id }}" id="todoCheckDone{{ todo.id }}" {{ todo.done?'checked' }} data-id="{{ todo.id }}">
                                                         <label for="todoCheckDone{{ todo.id }}"></label>
@@ -165,7 +167,7 @@
 
                         </div><!-- /.col -->
                     {% endif %}
-                    {% if is_granted('ROLE_PREZES') or is_granted('ROLE_ADMIN') %}
+                    {% if (is_granted('ROLE_PREZES') or is_granted('ROLE_ADMIN')) and not other %}
                         <div class="col-12">
                             <div class="row">
                                 <div class="card col-12">

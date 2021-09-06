@@ -4,16 +4,23 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\ResetPasswordFormType;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
-class SecurityController extends AbstractController
+class SecurityController extends CommonController
 {
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
          if ($this->getUser()) {
@@ -25,10 +32,15 @@ class SecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('pages/login/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        return new Response($this->twig->render('pages/login/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]));
     }
 
-    public function forgetPassword(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordEncoder, string $hash = null): Response
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
+    public function forgetPassword(Request $request, UserPasswordHasherInterface $passwordEncoder, string $hash = null): Response
     {
         $error = null;
         $success = null;
@@ -37,7 +49,7 @@ class SecurityController extends AbstractController
         {
             $form = null;
 
-            $user = $em->getRepository(User::class)->findOneBy(['forgetPasswordHash' => $hash]);
+            $user = $this->em->getRepository(User::class)->findOneBy(['forgetPasswordHash' => $hash]);
 
             if ($user)
             {
@@ -55,10 +67,10 @@ class SecurityController extends AbstractController
                     );
 
                     $user->removeForgetPasswordHash();
-                    $em->persist($user);
-                    $em->flush();
+                    $this->em->persist($user);
+                    $this->em->flush();
 
-                    return $this->redirectToRoute('index');
+                    return new RedirectResponse($this->generateUrl('index'));
                 }
                 $form = $form->createView();
             }
@@ -67,48 +79,43 @@ class SecurityController extends AbstractController
                 $error = 'Niepoprawny link resetujący!';
             }
 
-            return $this->render('pages/reset-password/reset-password.html.twig', [
+            return new Response($this->twig->render('pages/reset-password/reset-password.html.twig', [
                 'reset_form' => $form,
                 'error' => $error,
                 'success' => $success
-            ]);
+            ]));
         }
-        else
-        {
+        else {
             $form = $this->createFormBuilder()
                 ->add('email', EmailType::class, [
                     'required' => true,
-                    'label'=> false
+                    'label' => false
                 ])
                 ->getForm();
 
             $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid())
-            {
+            if ($form->isSubmitted() && $form->isValid()) {
                 $email = $form->get('email')->getData();
-                $user = $em->getRepository(User::class)->findOneBy(['email' => $email]);
-                if ($user)
-                {
+                $user = $this->em->getRepository(User::class)->findOneBy(['email' => $email]);
+                if ($user) {
                     $user->setForgetPasswordHash();
                     $hash = $user->getForgetPasswordHash();
                     $success = 'Poprawnie wysłano e-mail z linkiem do zresetowania hasła';
                     dump($hash);
-                    $em->persist($user);
-                    $em->flush();
+                    $this->em->persist($user);
+                    $this->em->flush();
                     // TODO: Email z linkiem do resetu
-                }
-                else
-                {
+                } else {
                     $error = 'Nie znaleziono użytkownika z takim adresem e-mail!';
                 }
             }
 
-            return $this->render('pages/forget-password/forget-password.html.twig', [
+            return new Response($this->twig->render('pages/forget-password/forget-password.html.twig', [
                 'forget_form' => $form->createView(),
                 'error' => $error,
                 'success' => $success
-            ]);
+            ]));
         }
     }
 
