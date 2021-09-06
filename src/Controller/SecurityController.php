@@ -25,7 +25,7 @@ class SecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('pages/security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        return $this->render('pages/login/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
     public function forgetPassword(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordEncoder, string $hash = null): Response
@@ -67,7 +67,7 @@ class SecurityController extends AbstractController
                 $error = 'Niepoprawny link resetujący!';
             }
 
-            return $this->render('pages/security/reset-password.html.twig', [
+            return $this->render('pages/reset-password/reset-password.html.twig', [
                 'reset_form' => $form,
                 'error' => $error,
                 'success' => $success
@@ -104,7 +104,7 @@ class SecurityController extends AbstractController
                 }
             }
 
-            return $this->render('pages/security/forget_password.html.twig', [
+            return $this->render('pages/forget-password/forget-password.html.twig', [
                 'forget_form' => $form->createView(),
                 'error' => $error,
                 'success' => $success

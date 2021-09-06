@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="wrapper">
+
+        {% block header %}
+            {{ include('parts/header/header.html.twig') }}
+        {% endblock %}
+
+        {% block sidebar %}
+            {{ include('parts/sidebar/sidebar.html.twig') }}
+        {% endblock %}
+
+        {% block content %}
+
+        {% endblock %}
+
+        {% block footer %}
+            {{ include('parts/footer/footer.html.twig') }}
+        {% endblock %}
+
+    </div>
+{% endblock %}

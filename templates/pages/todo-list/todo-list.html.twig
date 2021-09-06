@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout/main-layout.html.twig' %}
 
 {% set activeTodo = true %}
 
@@ -9,6 +9,8 @@
         window.initTodoPage()
     </script>
 {% endblock %}
+
+{% block title %}Zadania | {{ parent() }}{% endblock %}
 
 {% block content %}
     <div class="content-wrapper">

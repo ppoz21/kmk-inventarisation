@@ -29,7 +29,7 @@ class StationController extends AbstractController
         $station = new Station();
         $addForm = $this->createForm(AddStationFormType::class, $station);
         $stations = $this->em->getRepository(Station::class)->findAll();
-        return $this->render('pages/station/list.html.twig', [
+        return $this->render('pages/station-list/station-list.html.twig', [
             'stations' => $stations,
             'addForm' => $addForm->createView()
         ]);
@@ -42,7 +42,7 @@ class StationController extends AbstractController
         {
             if ($slug == $station->getSlug())
             {
-                return $this->render('pages/station/details.html.twig', [
+                return $this->render('pages/station-details/station-details.html.twig', [
                     'station' => $station
                 ]);
             }
@@ -76,7 +76,7 @@ class StationController extends AbstractController
 
         $addForm = $this->createForm(AddStationFormType::class, $station);
 
-        return $this->render('pages/station/add-edit-form.html.twig', [
+        return $this->render('parts/station-form/station-form.html.twig', [
             'addForm' => $addForm->createView()
         ]);
     }
@@ -129,6 +129,10 @@ class StationController extends AbstractController
                         $station->addUser($tempUser);
                         $forLogUsers .= $tempUser . ' ';
                     }
+                }
+                else
+                {
+                    $station->setUsers($users);
                 }
                 try {
                     $user = $validKey->getUser();

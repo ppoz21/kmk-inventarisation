@@ -1,27 +1,8 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout/main-layout.html.twig' %}
 
 {% set activeTrain = true %}
 
-{% block title %}Skład {{ train.locomotive.typeAndNumber }} ({{ train.station.name }}) - {{ parent() }}{% endblock %}
-
-{% block stylesheets %}
-    {{ parent() }}
-    <style>
-        .nav-pills .nav-link.active, .nav-pills .show>.nav-link
-        {
-            background-color: #dc3545;
-        }
-        .nav-pills .nav-link:not(.active):hover {
-            color: #dc3545;
-        }
-
-        .profile-user-img
-        {
-            border: 3px solid #dc3545;
-            width: 80%;
-        }
-    </style>
-{% endblock %}
+{% block title %}Skład {{ train.locomotive.typeAndNumber }} ({{ train.station.name }}) | {{ parent() }}{% endblock %}
 
 {% block content %}
     <div class="content-wrapper">

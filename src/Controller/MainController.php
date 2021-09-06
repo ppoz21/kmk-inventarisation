@@ -36,7 +36,7 @@ class MainController extends AbstractController
         $trains = count($this->em->getRepository(Train::class)->findAll());
         $users = count($this->em->getRepository(User::class)->findAll());
 
-        return $this->render('pages/homepage/index.html.twig', [
+        return $this->render('pages/homepage/homepage.html.twig', [
             'todos' => $todos,
             'stationsCount' => $stations,
             'trainsCount' => $trains,

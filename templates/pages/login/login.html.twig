@@ -1,17 +1,6 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout/security-layout.html.twig' %}
 
-{% set unwrapped = true %}
-
-{% block title %}KMK | Logowanie{% endblock %}
-
-{% block header %}
-
-{% endblock %}
-
-{% block sidebar %}
-
-{% endblock %}
-
+{% block title %}Logowanie | {{ parent() }}{% endblock %}
 {% block bodyclass %}class="hold-transition login-page"{% endblock %}
 
 {% block content %}
@@ -86,8 +75,4 @@
         <!-- /.login-card-body -->
     </div>
 </div>
-{% endblock %}
-
-{% block footer %}
-
 {% endblock %}

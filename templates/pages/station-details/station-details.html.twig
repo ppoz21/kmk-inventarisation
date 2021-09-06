@@ -1,20 +1,7 @@
-{% extends 'base.html.twig' %}
-{% block title %}{{ station.name }} - {{ parent() }}{% endblock %}
+{% extends 'layout/main-layout.html.twig' %}
+{% block title %}{{ station.name }} | {{ parent() }}{% endblock %}
 
 {% set stacjeActive = true %}
-
-{% block stylesheets %}
-    {{ parent() }}
-    <style>
-        .nav-pills .nav-link.active, .nav-pills .show>.nav-link
-        {
-            background-color: #dc3545;
-        }
-        .nav-pills .nav-link:not(.active):hover {
-            color: #dc3545;
-        }
-    </style>
-{% endblock %}
 
 {% block content %}
     <div class="content-wrapper">

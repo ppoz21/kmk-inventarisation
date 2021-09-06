@@ -1,8 +1,8 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout/main-layout.html.twig' %}
 
 {% set activeTrain = true %}
 
-{% block title %}Składy - {{ station.name }} - {{ parent() }}{% endblock %}
+{% block title %}Składy - {{ station.name }} | {{ parent() }}{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -12,32 +12,13 @@
 
 {% block javascripts %}
     {{ parent() }}
-<script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-<script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-
-<script>
-    $(function () {
-        $('#listaSkladow').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "autoWidth": false,
-            "responsive": true,
-            "language": {
-                "paginate": {
-                    "first": "Pierwsza",
-                    "last": "Ostatnia",
-                    "next": "Następna",
-                    "previous": "Poprzednia"
-                },
-                "info": "Wyniki od _START_ do _END_ z _TOTAL_"
-            }
-        });
-    });
-</script>
+    <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script>
+        window.initTrainOnStation()
+    </script>
 
 {% endblock %}
 

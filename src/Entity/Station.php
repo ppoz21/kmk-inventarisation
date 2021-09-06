@@ -120,6 +120,11 @@ class Station
         return $this;
     }
 
+    public function setUsers(?Collection $users)
+    {
+        $this->users = $users;
+    }
+
     public function getScheme(): ?string
     {
         return $this->scheme;

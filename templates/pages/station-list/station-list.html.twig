@@ -1,6 +1,6 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout/main-layout.html.twig' %}
 
-{% block title %}Stacje - {{ parent() }}{% endblock %}
+{% block title %}Stacje | {{ parent() }}{% endblock %}
 
 {% set stacjeActive = true %}
 
@@ -24,109 +24,9 @@
     <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
-    <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+{#    <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>#}
     <script>
-        $(function () {
-            $('.select2').select2()
-        })
-    </script>
-    <script>
-        $(function () {
-            $('#listaStacji').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "autoWidth": false,
-                "responsive": true,
-                "language": {
-                    "paginate": {
-                        "first": "Pierwsza",
-                        "last": "Ostatnia",
-                        "next": "Następna",
-                        "previous": "Poprzednia"
-                    },
-                    "info": "Wyniki od _START_ do _END_ z _TOTAL_"
-                }
-            });
-        });
-    </script>
-    <script>
-        function createModal(id = null)
-        {
-            let getFormURL = '{{ path('get_form_ajax') }}?id='+id
-            $.ajax({
-                type: 'POST',
-                url: getFormURL
-            }).done(function (response){
-                Swal.fire({
-                    title: 'Dodaj nową stację',
-                    html: response,
-                    showCancelButton: true,
-                    cancelButtonText: 'Anuluj',
-                    confirmButtonText: 'Dodaj',
-                    confirmButtonColor: '#28a745',
-                    cancelButtonColor: '#dc3545',
-                    showLoaderOnConfirm: true,
-                    preConfirm: () => {
-                        let valid = true;
-                        let name = $('#add_station_form_name').val()
-                        let description = $('#add_station_form_description').val()
-                        let users = $('#add_station_form_users').val()
-                        let apiKey = $('#api_key').val()
-
-                        let url = '{{ path('add_station_ajax') }}';
-
-
-                        $.ajax({
-                            type: 'POST',
-                            url: url,
-                            data: {
-                                'name': name,
-                                'description': description,
-                                'users': users,
-                                'api_key': apiKey,
-                                'id': id
-                            }
-                        }).done(function (d) {
-                            if (d.status === 'success')
-                            {
-                                Swal.fire(
-                                    'Sukces',
-                                    'Poprawnie dodano stację',
-                                    'success'
-                                ).then(function () {
-                                    window.location.reload();
-                                })
-                            }
-                            else
-                            {
-                                let errors = d.errors;
-                                let text = 'Wystąpiły następujące błędy: '
-                                $.each(errors, function (key, val) {
-                                    text += '<br>' + val
-                                })
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Błąd',
-                                    html: text,
-                                    confirmButtonColor: '#28a745',
-                                    confirmButtonText: 'OK'
-                                })
-                            }
-                        })
-                    },
-                    allowOutsideClick: () => !Swal.isLoading()
-                })
-                $('.select2').select2();
-            })
-
-        }
-
-        $('#addStation').click(function (e) {
-            createModal(null);
-        })
+        window.initStationList();
     </script>
 {% endblock %}
 
@@ -189,7 +89,7 @@
                                             </td>
                                             <td class="text-center">
                                                 <a href="{{ path('station_details', {'id': station.id, 'slug': station.slug}) }}" class="text-danger"><i class="fas fa-eye"></i></a>
-                                                <a href="javascript:void(0)" class="text-danger" onclick="createModal({{ station.id }})"><i class="fas fa-edit"></i></a>
+                                                <a href="javascript:void(0)" class="text-danger edit-station" data-id="{{ station.id }}"><i class="fas fa-edit"></i></a>
                                             </td>
                                         </tr>
                                     {% endfor %}

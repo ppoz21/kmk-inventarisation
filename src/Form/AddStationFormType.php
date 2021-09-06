@@ -25,8 +25,9 @@ class AddStationFormType extends AbstractType
             ->add('users', EntityType::class, [
                 'label' => false,
                 'class' => User::class,
-                'mapped' => false,
-                'multiple' => true
+                'multiple' => true,
+                'required' => false,
+                'placeholder' => 'XD'
             ])
         ;
     }

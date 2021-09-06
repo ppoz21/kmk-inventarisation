@@ -33,7 +33,7 @@ class TrainController extends AbstractController
         {
             $stations = $stationRepository->findAll();
         }
-        return $this->render('pages/train/landing.html.twig', [
+        return $this->render('pages/train-landing/train-landing.html.twig', [
             'stations' => $stations,
         ]);
     }
@@ -45,7 +45,7 @@ class TrainController extends AbstractController
         {
             if ($slug == $station->getSlug())
             {
-                return $this->render('pages/train/on-station.html.twig', [
+                return $this->render('pages/train-on-station/train-on-station.html.twig', [
                     'station' => $station,
                 ]);
             }
@@ -68,7 +68,7 @@ class TrainController extends AbstractController
         {
             if ($slug == $train->getSlug())
             {
-                return $this->render('pages/train/details.html.twig', [
+                return $this->render('pages/train-details/train-details.html.twig', [
                     'train' => $train,
                 ]);
             }

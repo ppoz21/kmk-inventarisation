@@ -1,7 +1,5 @@
-{% set unwrapped = false %}
-
 <!DOCTYPE html>
-<html>
+<html lang="pl">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -40,35 +38,12 @@
         {% endblock %}
     </head>
     <body {% block bodyclass %}class="hold-transition sidebar-mini layout-fixed"{% endblock %}>
-        {% if unwrapped %}<div class="wrapper">{% endif %}
-            {% block header %}
-                {{ include('parts/header.html.twig') }}
-            {% endblock %}
+        {% block body %}
 
-            {% block sidebar %}
-                {{ include('parts/sidebar.html.twig') }}
-            {% endblock %}
-
-            {% block content %}
-
-            {% endblock %}
-
-            {% block footer %}
-                {{ include('parts/footer.html.twig') }}
-            {% endblock %}
-            <!-- Control Sidebar -->
-            <aside class="control-sidebar control-sidebar-dark">
-                <!-- Control sidebar content goes here -->
-            </aside>
-            <!-- /.control-sidebar -->
-        {% if unwrapped %}</div>{% endif %}
+        {% endblock %}
         {% block javascripts %}
             <!-- Webpack generated JS -->
             <script src="{{ asset('app/dist/main.js') }}"></script>
-            <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-            <script>
-                $.widget.bridge('uibutton', $.ui.button)
-            </script>
             <!-- ChartJS -->
             <script src="{{ asset('plugins/chart.js/Chart.min.js') }}"></script>
             <!-- Sparkline -->

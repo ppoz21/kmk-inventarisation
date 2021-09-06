@@ -41,7 +41,7 @@ class TodoController extends AbstractController
         }
         $todos = $this->em->getRepository(ToDoList::class)->findByUser($user, true, ['deadline' => 'ASC']);
         $done = $this->em->getRepository(ToDoList::class)->findByUser($user, false,  ['deadline' => 'ASC']);
-        return $this->render('pages/todo/list.html.twig', [
+        return $this->render('pages/todo-list/todo-list.html.twig', [
             'todos' => $todos,
             'done' => $done,
             'other' => $other,
@@ -93,7 +93,7 @@ class TodoController extends AbstractController
 
         $tasks = $this->em->getRepository(ToDoList::class)->findBy(['addedByAdmin' => true], ['deadline' => 'DESC']);
 
-        return $this->render('pages/todo/admintask.html.twig', [
+        return $this->render('parts/todo-admin-list/todo-admin-list.html.twig', [
             'admintasks' => $tasks
         ]);
 
