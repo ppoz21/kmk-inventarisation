@@ -14,6 +14,7 @@ const mainConfig = {
         filename: '[name].js'
     },
     target: 'node',
+    devtool: 'source-map',
     module: {
         rules: [
             {
@@ -23,7 +24,8 @@ const mainConfig = {
             },
             {
                 test: /\.scss$/,
-                use: [ 'style-loader',
+                use: [
+                    'style-loader',
                     {
                         loader: MiniCssExtractPlugin.loader,
                         options: {
@@ -35,10 +37,20 @@ const mainConfig = {
                         options: {
                             url: false,
                             esModule: false,
+                            sourceMap: true
                         },
                     },
                     'postcss-loader',
-                    'sass-loader']
+                    {
+                        loader: 'sass-loader',
+                        options: {
+                            sourceMap: true,
+                            sassOptions: {
+                                outputStyle: "compressed",
+                            },
+                        }
+                    }
+                ]
             },
             {
                 test: /\.css$/i,
