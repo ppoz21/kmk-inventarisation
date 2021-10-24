@@ -5,14 +5,17 @@ namespace App\Controller;
 use App\Entity\Station;
 use App\Entity\Train;
 use App\Repository\StationRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-class TrainController extends CommonController
+class TrainController extends AbstractController
 {
 
     /**
@@ -20,7 +23,7 @@ class TrainController extends CommonController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    public function landingAction(StationRepository $stationRepository): Response
+    public function landingAction(StationRepository $stationRepository, Environment $twig): Response
     {
         if (count($stations = $this->getUser()->getStations()) == 1)
         {
@@ -33,7 +36,7 @@ class TrainController extends CommonController
             $stations = $stationRepository->findAll();
         }
 
-        return new Response($this->twig->render('pages/train-landing/train-landing.html.twig', [
+        return new Response($twig->render('pages/train-landing/train-landing.html.twig', [
             'stations' => $stations,
         ]));
     }
@@ -43,14 +46,14 @@ class TrainController extends CommonController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function stationAction($id = 0, $slug = null): Response
+    public function stationAction(EntityManagerInterface $em, Environment $twig ,$id = 0, $slug = null): Response
     {
-        $station = $this->em->getRepository(Station::class)->find($id);
+        $station = $em->getRepository(Station::class)->find($id);
         if ($station)
         {
             if ($slug == $station->getSlug())
             {
-                return new Response($this->twig->render('pages/train-on-station/train-on-station.html.twig', [
+                return new Response($twig->render('pages/train-on-station/train-on-station.html.twig', [
                     'station' => $station,
                 ]));
             }
@@ -71,14 +74,14 @@ class TrainController extends CommonController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    public function detailsAction($id = 0, $slug = null): Response
+    public function detailsAction(EntityManagerInterface $em, Environment $twig, $id = 0, $slug = null): Response
     {
-        $train = $this->em->getRepository(Train::class)->find($id);
+        $train = $em->getRepository(Train::class)->find($id);
         if ($train)
         {
             if ($slug == $train->getSlug())
             {
-                return new Response($this->twig->render('pages/train-details/train-details.html.twig', [
+                return new Response($twig->render('pages/train-details/train-details.html.twig', [
                     'train' => $train,
                 ]));
             }

@@ -8,12 +8,15 @@ use App\Entity\Station;
 use App\Entity\ToDoList;
 use App\Entity\Train;
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-class MainController extends CommonController
+class MainController extends AbstractController
 {
 
     /**
@@ -21,7 +24,7 @@ class MainController extends CommonController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    public function mainAction(): Response {
+    public function mainAction(EntityManagerInterface $em, Environment $twig): Response {
         if (!$this->getUser())
         {
             return $this->redirectToRoute('app_login');
@@ -30,13 +33,13 @@ class MainController extends CommonController
         /** @var User $user */
         $user = $this->getUser();
 
-        $todos = $this->em->getRepository(ToDoList::class)->findByUser($user, true, ['deadline' => 'ASC']);
+        $todos = $em->getRepository(ToDoList::class)->findByUser($user, true, ['deadline' => 'ASC']);
 
-        $stations = count($this->em->getRepository(Station::class)->findAll());
-        $trains = count($this->em->getRepository(Train::class)->findAll());
-        $users = count($this->em->getRepository(User::class)->findAll());
+        $stations = count($em->getRepository(Station::class)->findAll());
+        $trains = count($em->getRepository(Train::class)->findAll());
+        $users = count($em->getRepository(User::class)->findAll());
 
-        return new Response($this->twig->render('pages/homepage/homepage.html.twig', [
+        return new Response($twig->render('pages/homepage/homepage.html.twig', [
             'todos' => $todos,
             'stationsCount' => $stations,
             'trainsCount' => $trains,

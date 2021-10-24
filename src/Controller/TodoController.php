@@ -7,15 +7,18 @@ namespace App\Controller;
 use App\Entity\ToDoList;
 use App\Entity\User;
 use App\Form\TodoAdminType;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-class TodoController extends CommonController
+class TodoController extends AbstractController
 {
 
     /**
@@ -23,7 +26,7 @@ class TodoController extends CommonController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function listAction(int $id = null, string $slug = null): Response
+    public function listAction(EntityManagerInterface $em, Environment $twig, int $id = null, string $slug = null): Response
     {
         if (!$id)
         {
@@ -32,37 +35,37 @@ class TodoController extends CommonController
         }
         else
         {
-            $user = $this->em->getRepository(User::class)->find($id);
+            $user = $em->getRepository(User::class)->find($id);
             $other = $user;
 
             if ($user && $slug != $user->getSlug())
                 return new RedirectResponse($this->generateUrl('todo_list_user', ['slug' => $user->getSlug(), 'id' => $id]), 301);
         }
-        $todos = $this->em->getRepository(ToDoList::class)->findByUser($user, true, ['deadline' => 'ASC']);
-        $done = $this->em->getRepository(ToDoList::class)->findByUser($user, false,  ['deadline' => 'ASC']);
+        $todos = $em->getRepository(ToDoList::class)->findByUser($user, true, ['deadline' => 'ASC']);
+        $done = $em->getRepository(ToDoList::class)->findByUser($user, false,  ['deadline' => 'ASC']);
 
-        return new Response($this->twig->render('pages/todo-list/todo-list.html.twig', [
+        return new Response($twig->render('pages/todo-list/todo-list.html.twig', [
             'todos' => $todos,
             'done' => $done,
             'other' => $other,
         ]));
     }
 
-    public function changeStatus(Request $request): JsonResponse
+    public function changeStatus(Request $request, EntityManagerInterface $em): JsonResponse
     {
         $out = [];
         $id = $request->get('id');
         $state = $request->get('state') == 'true';
 
 
-        $todo = $this->em->getRepository(ToDoList::class)->find($id);
+        $todo = $em->getRepository(ToDoList::class)->find($id);
 
         if ($todo)
         {
             try {
                 $todo->setDone($state);
-                $this->em->persist($todo);
-                $this->em->flush();
+                $em->persist($todo);
+                $em->flush();
                 $out['ok'] = 'ok';
             }
             catch (\Exception $e)
@@ -75,20 +78,20 @@ class TodoController extends CommonController
         return new JsonResponse($out, Response::HTTP_OK);
     }
 
-    public function hideTodo(Request $request): JsonResponse
+    public function hideTodo(Request $request, EntityManagerInterface $em): JsonResponse
     {
         $out = [];
         $id = $request->get('id');
 
-        $todo = $this->em->getRepository(ToDoList::class)->find($id);
+        $todo = $em->getRepository(ToDoList::class)->find($id);
 
 
         if ($todo)
         {
             try {
                 $todo->setDisplay(false);
-                $this->em->persist($todo);
-                $this->em->flush();
+                $em->persist($todo);
+                $em->flush();
                 $out['ok'] = 'ok';
             }
             catch (\Exception $e)
@@ -111,17 +114,17 @@ class TodoController extends CommonController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function adminTasks(): Response
+    public function adminTasks(EntityManagerInterface $em, Environment $twig): Response
     {
 
-        $tasks = $this->em->getRepository(ToDoList::class)->findBy(['addedByAdmin' => true, 'display' => true], ['deadline' => 'ASC']);
+        $tasks = $em->getRepository(ToDoList::class)->findBy(['addedByAdmin' => true, 'display' => true], ['deadline' => 'ASC']);
 
-        return new Response($this->twig->render('parts/todo-admin-list/todo-admin-list.html.twig', [
+        return new Response($twig->render('parts/todo-admin-list/todo-admin-list.html.twig', [
             'admintasks' => $tasks
         ]));
     }
 
-    public function addTask(Request $request): JsonResponse
+    public function addTask(Request $request, EntityManagerInterface $em): JsonResponse
     {
         $out = [];
         $name = $request->get('name');
@@ -150,8 +153,8 @@ class TodoController extends CommonController
             $task->setDeadline($deadlineObj);
             $task->addUser($user);
 
-            $this->em->persist($task);
-            $this->em->flush();
+            $em->persist($task);
+            $em->flush();
             $out['ok'] = 'ok';
         }
         catch (\Exception $e)
@@ -162,7 +165,7 @@ class TodoController extends CommonController
         return new JsonResponse($out, Response::HTTP_OK);
     }
 
-    public function addAdminTask(Request $request): JsonResponse
+    public function addAdminTask(Request $request, EntityManagerInterface $em): JsonResponse
     {
         $out = [];
 
@@ -176,8 +179,8 @@ class TodoController extends CommonController
         {
             try {
                 $task->setAddedByAdmin(true);
-                $this->em->persist($task);
-                $this->em->flush();
+                $em->persist($task);
+                $em->flush();
                 $out['ok'] = 'ok';
             }
             catch (\Exception $e)

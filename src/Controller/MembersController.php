@@ -3,13 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
 
-class MembersController extends CommonController
+class MembersController extends AbstractController
 {
 
     /**
@@ -17,11 +20,11 @@ class MembersController extends CommonController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function membersList(): Response
+    public function membersList(EntityManagerInterface $em, Environment $twig): Response
     {
-        $users = $this->em->getRepository(User::class)->findAll();
+        $users = $em->getRepository(User::class)->findAll();
 
-        return new Response($this->twig->render('pages/members-list/members-list.html.twig', [
+        return new Response($twig->render('pages/members-list/members-list.html.twig', [
             'members' => $users
         ]));
     }

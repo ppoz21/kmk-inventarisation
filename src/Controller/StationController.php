@@ -7,16 +7,19 @@ use App\Entity\StationLog;
 use App\Entity\User;
 use App\Form\AddStationFormType;
 use App\Repository\APIKeyRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-class StationController extends CommonController
+class StationController extends AbstractController
 {
 
     /**
@@ -24,13 +27,13 @@ class StationController extends CommonController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function listAction(): Response
+    public function listAction(EntityManagerInterface $em, Environment $twig): Response
     {
         $station = new Station();
         $addForm = $this->createForm(AddStationFormType::class, $station);
-        $stations = $this->em->getRepository(Station::class)->findAll();
+        $stations = $em->getRepository(Station::class)->findAll();
 
-        return new Response($this->twig->render('pages/station-list/station-list.html.twig', [
+        return new Response($twig->render('pages/station-list/station-list.html.twig', [
             'stations' => $stations,
             'addForm' => $addForm->createView()
         ]));
@@ -41,14 +44,14 @@ class StationController extends CommonController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    public function detailsAction(int $id, string $slug): Response
+    public function detailsAction(EntityManagerInterface $em, Environment $twig, int $id, string $slug): Response
     {
-        $station = $this->em->getRepository(Station::class)->find($id);
+        $station = $em->getRepository(Station::class)->find($id);
         if ($station)
         {
             if ($slug == $station->getSlug())
             {
-                return new Response($this->twig->render('pages/station-details/station-details.html.twig', [
+                return new Response($twig->render('pages/station-details/station-details.html.twig', [
                     'station' => $station
                 ]));
             }
@@ -69,12 +72,12 @@ class StationController extends CommonController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function ajaxCreateFormAction(Request $request): Response
+    public function ajaxCreateFormAction(Request $request, EntityManagerInterface $em, Environment $twig): Response
     {
         $id = $request->get('id');
         if ($id)
         {
-            $station = $this->em->getRepository(Station::class)->find($id);
+            $station = $em->getRepository(Station::class)->find($id);
             if (!$station)
             {
                 $station = new Station();
@@ -87,12 +90,12 @@ class StationController extends CommonController
 
         $addForm = $this->createForm(AddStationFormType::class, $station);
 
-        return new Response($this->twig->render('parts/station-form/station-form.html.twig', [
+        return new Response($twig->render('parts/station-form/station-form.html.twig', [
             'addForm' => $addForm->createView()
         ]));
     }
 
-    public function ajaxAddStationAction(Request $request, APIKeyRepository $keyRepository): JsonResponse
+    public function ajaxAddStationAction(Request $request, APIKeyRepository $keyRepository, EntityManagerInterface $em): JsonResponse
     {
         $name = $request->get('name');
         $description = $request->get('description');
@@ -117,7 +120,7 @@ class StationController extends CommonController
             {
                 if ($id)
                 {
-                    $station = $this->em->getRepository(Station::class)->find($id);
+                    $station = $em->getRepository(Station::class)->find($id);
                     if (!$station)
                     {
                         $station = new Station();
@@ -136,7 +139,7 @@ class StationController extends CommonController
                     $forLogUsers = "Dodano użytkowników: ";
                     foreach ($users as $user)
                     {
-                        $tempUser = $this->em->getRepository(User::class)->find($user);
+                        $tempUser = $em->getRepository(User::class)->find($user);
                         $station->addUser($tempUser);
                         $forLogUsers .= $tempUser . ' ';
                     }
@@ -161,15 +164,15 @@ class StationController extends CommonController
                         $msg .= $forLogUsers;
                     }
 
-                    $this->em->persist($station);
-                    $this->em->flush();
+                    $em->persist($station);
+                    $em->flush();
                     try {
                         $log->setDate(new \DateTime());
                         $log->setStation($station);
                         $log->setUser($user);
                         $log->setContent($msg);
-                        $this->em->persist($log);
-                        $this->em->flush();
+                        $em->persist($log);
+                        $em->flush();
                     }
                     catch (\Exception $e){}
 
