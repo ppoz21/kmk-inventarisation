@@ -26,7 +26,7 @@ class TodoController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function listAction(EntityManagerInterface $em, Environment $twig, int $id = null, string $slug = null): Response
+    public function list(EntityManagerInterface $em, Environment $twig, int $id = null, string $slug = null): Response
     {
         if (!$id)
         {
@@ -44,7 +44,7 @@ class TodoController extends AbstractController
         $todos = $em->getRepository(ToDoList::class)->findByUser($user, true, ['deadline' => 'ASC']);
         $done = $em->getRepository(ToDoList::class)->findByUser($user, false,  ['deadline' => 'ASC']);
 
-        return new Response($twig->render('pages/todo-list/todo-list.html.twig', [
+        return new Response($twig->render('pages/todo/list.html.twig', [
             'todos' => $todos,
             'done' => $done,
             'other' => $other,
@@ -119,7 +119,7 @@ class TodoController extends AbstractController
 
         $tasks = $em->getRepository(ToDoList::class)->findBy(['addedByAdmin' => true, 'display' => true], ['deadline' => 'ASC']);
 
-        return new Response($twig->render('parts/todo-admin-list/todo-admin-list.html.twig', [
+        return new Response($twig->render('pages/todo/admin-list.html.twig', [
             'admintasks' => $tasks
         ]));
     }
@@ -189,7 +189,7 @@ class TodoController extends AbstractController
             }
         }
 
-        $out['html'] = $this->renderView('parts/todo-admin-form/todo-admin-form.html.twig', [
+        $out['html'] = $this->renderView('pages/todo/admin-form.html.twig', [
             'form' => $form->createView()
         ]);
 

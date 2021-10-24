@@ -1,30 +1,30 @@
 index:
     path: /
-    controller: App\Controller\MainController::mainAction
+    controller: App\Controller\MainController::homepage
 
 # station
 
 station:
     path: /stacje
-    controller: App\Controller\StationController::listAction
+    controller: App\Controller\StationController::list
 
 station_details:
     path: /stacje/{slug}-s{id}
-    controller: App\Controller\StationController::detailsAction
+    controller: App\Controller\StationController::details
     requirements:
         slug: .*
         id: \d+
 
 get_form_ajax:
-    path: /ajax/pobierz-formularz-stacji
-    controller: App\Controller\StationController::ajaxCreateFormAction
+    path: /stacje/ajax/pobierz-formularz-stacji
+    controller: App\Controller\StationController::ajaxCreateForm
     options:
         expose: true
 
 
 add_station_ajax:
-    path: /ajax/dodaj-stacje
-    controller: App\Controller\StationController::ajaxAddStationAction
+    path: /stacje/ajax/dodaj-stacje
+    controller: App\Controller\StationController::ajaxAddStation
     options:
         expose: true
 
@@ -32,15 +32,15 @@ add_station_ajax:
 
 train_landing:
     path: /sklady
-    controller: App\Controller\TrainController::landingAction
+    controller: App\Controller\TrainController::landing
 
 train_on_station:
     path: /sklady/stacje/{slug}-s{id}
-    controller: App\Controller\TrainController::stationAction
+    controller: App\Controller\TrainController::station
 
 train_details:
     path: /sklady/{slug}-sk-{id}
-    controller: App\Controller\TrainController::detailsAction
+    controller: App\Controller\TrainController::details
     requirements:
         slug: .*
 
@@ -48,7 +48,7 @@ train_details:
 
 todo_list:
     path: /do-zrobienia
-    controller: App\Controller\TodoController::listAction
+    controller: App\Controller\TodoController::list
 
 todo_list_ajax:
     path: /do-zrobienia/ajax/zmien-status
@@ -58,7 +58,7 @@ todo_list_ajax:
 
 todo_list_user:
     path: /do-zrobienia/{slug}-u{id}
-    controller: App\Controller\TodoController::listAction
+    controller: App\Controller\TodoController::list
     requirements:
         slug: .*
         id: \d+
@@ -85,7 +85,31 @@ todo_list_hide:
 
 members_list:
     path: /czlonkowie-klubu
-    controller: App\Controller\MembersController::membersList
+    controller: App\Controller\MembersController::list
+
+# model
+model_add:
+    path: /modele/dodaj-model
+    controller: App\Controller\ModelController::modelForm
+
+model_add_type:
+    path: /modele/dodaj-model/{type}
+    controller: App\Controller\ModelController::modelForm
+    requirements:
+        type: .*
+
+model_edit_type:
+    path: /modele/edytuj-model/{type}/{id}
+    controller: App\Controller\ModelController::modelForm
+    requirements:
+        type: .*
+        id: \d+
+
+model_list:
+    path: /modele/lista/{type}
+    controller: App\Controller\ModelController::list
+    requirements:
+        type: .*
 
 # security
 

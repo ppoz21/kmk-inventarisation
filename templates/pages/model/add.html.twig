@@ -1,0 +1,38 @@
+{% extends 'layout/main-layout.html.twig' %}
+
+{% set activeModel = true %}
+{% set activeModelAdd = true %}
+
+{% block title %}Dodaj model | {{ parent() }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+    <style>
+        .select2-container--default .select2-selection--single
+        {
+            height: fit-content;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="content-wrapper">
+        {% if not type %}
+            {% include 'pages/model/add-types/no-type.html.twig' %}
+        {% elseif type == 'lokomotywa' %}
+            {% include 'pages/model/add-types/locomotive.html.twig' %}
+        {% else %}
+            {% include 'pages/model/add-types/car.html.twig' %}
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        window.initModelAdd();
+    </script>
+{% endblock %}

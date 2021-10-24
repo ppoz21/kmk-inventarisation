@@ -19,6 +19,10 @@ __webpack_require__(/*! ./pages/stationList */ "./assets/js/custom/pages/station
 
 __webpack_require__(/*! ./pages/membersList */ "./assets/js/custom/pages/membersList.js");
 
+__webpack_require__(/*! ./pages/modelAdd */ "./assets/js/custom/pages/modelAdd.js");
+
+__webpack_require__(/*! ./pages/modelList */ "./assets/js/custom/pages/modelList.js");
+
 /***/ }),
 
 /***/ "./assets/js/custom/pages/membersList.js":
@@ -52,6 +56,68 @@ const membersList = () => {
 
 window.initMembersList = () => {
   membersList();
+};
+
+/***/ }),
+
+/***/ "./assets/js/custom/pages/modelAdd.js":
+/*!********************************************!*\
+  !*** ./assets/js/custom/pages/modelAdd.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _plugins_select2_js_select2_full__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../plugins/select2/js/select2.full */ "./assets/js/plugins/select2/js/select2.full.js");
+/* harmony import */ var _plugins_select2_js_select2_full__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_plugins_select2_js_select2_full__WEBPACK_IMPORTED_MODULE_0__);
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
+
+const modelAdd = () => {
+  $(() => {
+    //Initialize Select2 Elements
+    $('.select2').select2();
+  });
+};
+
+window.initModelAdd = () => {
+  modelAdd();
+};
+
+/***/ }),
+
+/***/ "./assets/js/custom/pages/modelList.js":
+/*!*********************************************!*\
+  !*** ./assets/js/custom/pages/modelList.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+const modelList = () => {
+  $(() => {
+    $('.datatable').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "autoWidth": false,
+      "responsive": true,
+      "language": {
+        "paginate": {
+          "first": "Pierwsza",
+          "last": "Ostatnia",
+          "next": "Następna",
+          "previous": "Poprzednia"
+        },
+        "info": "Wyniki od _START_ do _END_ z _TOTAL_",
+        "emptyTable": "Nie znaleziono danych"
+      }
+    });
+  });
+};
+
+window.initModelList = () => {
+  modelList();
 };
 
 /***/ }),
@@ -32138,7 +32204,7 @@ if (typeof this !== 'undefined' && this.Sweetalert2){  this.swal = this.sweetAle
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"base_url":"","routes":{"get_form_ajax":{"tokens":[["text","/ajax/pobierz-formularz-stacji"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"add_station_ajax":{"tokens":[["text","/ajax/dodaj-stacje"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"todo_list_ajax":{"tokens":[["text","/do-zrobienia/ajax/zmien-status"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"todo_list_add":{"tokens":[["text","/do-zrobienia/ajax/dodaj"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"todo_list_add_admin":{"tokens":[["text","/do-zrobienia/ajax/administrator/dodaj"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"todo_list_hide":{"tokens":[["text","/do-zrobienia/ajax/archiwizuj"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]}},"prefix":"","host":"localhost","port":"","scheme":"http","locale":[]}');
+module.exports = JSON.parse('{"base_url":"","routes":{"get_form_ajax":{"tokens":[["text","/stacje/ajax/pobierz-formularz-stacji"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"add_station_ajax":{"tokens":[["text","/stacje/ajax/dodaj-stacje"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"todo_list_ajax":{"tokens":[["text","/do-zrobienia/ajax/zmien-status"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"todo_list_add":{"tokens":[["text","/do-zrobienia/ajax/dodaj"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"todo_list_add_admin":{"tokens":[["text","/do-zrobienia/ajax/administrator/dodaj"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"todo_list_hide":{"tokens":[["text","/do-zrobienia/ajax/archiwizuj"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]}},"prefix":"","host":"localhost","port":"","scheme":"http","locale":[]}');
 
 /***/ })
 

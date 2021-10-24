@@ -1,0 +1,61 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Lista lokomotyw</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">Modele</li>
+                    <li class="breadcrumb-item">Lista modeli</li>
+                    <li class="breadcrumb-item active">Lista lokomotyw</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-bordered table-hover datatable">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Typ i numer lokomotywy</th>
+                                <th>Malowanie</th>
+                                <th>Nazwa skrócona</th>
+                                <th>Właściciel</th>
+                                <th>Komentarze</th>
+                                <th>Edycja</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for loco in models %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ loco.typeAndNumber }}</td>
+                                        <td>{{ loco.painting }}</td>
+                                        <td>{{ loco.shortName }}</td>
+                                        <td>{{ loco.owner }}</td>
+                                        <td>{{ loco.comments }}</td>
+                                        <td class="text-center">
+                                            <a href="{{ path('model_edit_type', {'id': loco.id, 'type': 'lokomotywa'}) }}" class="text-danger"><i class="fas fa-edit"></i></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>

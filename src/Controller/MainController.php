@@ -24,7 +24,7 @@ class MainController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    public function mainAction(EntityManagerInterface $em, Environment $twig): Response {
+    public function homepage(EntityManagerInterface $em, Environment $twig): Response {
         if (!$this->getUser())
         {
             return $this->redirectToRoute('app_login');
@@ -39,7 +39,7 @@ class MainController extends AbstractController
         $trains = count($em->getRepository(Train::class)->findAll());
         $users = count($em->getRepository(User::class)->findAll());
 
-        return new Response($twig->render('pages/homepage/homepage.html.twig', [
+        return new Response($twig->render('pages/main/homepage.html.twig', [
             'todos' => $todos,
             'stationsCount' => $stations,
             'trainsCount' => $trains,

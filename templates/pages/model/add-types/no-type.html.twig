@@ -1,0 +1,47 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Dodaj model</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">Modele</li>
+                    <li class="breadcrumb-item active">Dodaj model</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    {{ form_start(form) }}
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    {{ form_label(form.model_type) }}
+                                    {{ form_widget(form.model_type, {'attr': {'class': 'form-control select2 select2-danger'}}) }}
+                                </div>
+                                <!-- /.form-group -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                        {{ form_row(form.submit, {'attr': {'class': 'btn btn-block bg-gradient-danger'}}) }}
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>

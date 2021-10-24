@@ -20,11 +20,11 @@ class MembersController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function membersList(EntityManagerInterface $em, Environment $twig): Response
+    public function list(EntityManagerInterface $em, Environment $twig): Response
     {
         $users = $em->getRepository(User::class)->findAll();
 
-        return new Response($twig->render('pages/members-list/members-list.html.twig', [
+        return new Response($twig->render('pages/members/list.html.twig', [
             'members' => $users
         ]));
     }

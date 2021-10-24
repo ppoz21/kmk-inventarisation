@@ -1,0 +1,90 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Dodaj lokomotywę</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">Modele</li>
+                    <li class="breadcrumb-item"><a href="{{ path('model_add') }}">Dodaj model</a></li>
+                    <li class="breadcrumb-item active">Dodaj lokomotywę</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    {{ form_start(form) }}
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    {{ form_label(form.typeAndNumber) }}
+                                    {{ form_widget(form.typeAndNumber, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                                <!-- /.form-group -->
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    {{ form_label(form.painting) }}
+                                    {{ form_widget(form.painting, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                                <!-- /.form-group -->
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    {{ form_label(form.shortName) }}
+                                    {{ form_widget(form.shortName, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                                <!-- /.form-group -->
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    {{ form_label(form.owner) }}
+                                    {{ form_widget(form.owner, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                                <!-- /.form-group -->
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    {{ form_label(form.comments) }}
+                                    {{ form_widget(form.comments, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                                <!-- /.form-group -->
+                            </div>
+{#                            <div class="col-12">#}
+{#                                <div class="form-group">#}
+{#                                    {{ form_label(form.photo) }}#}
+{#                                    {{ form_widget(form.photo, {'attr': {'class': 'form-control'}}) }}#}
+{#                                </div>#}
+{#                                <!-- /.form-group -->#}
+{#                            </div>#} {# TODO: Photo uploader #}
+                            <div class="col-12">
+                                <div class="form-group">
+                                    {{ form_label(form.train.station) }}
+                                    {{ form_widget(form.train.station, {'attr': {'class': 'form-control select2 select2-danger'}}) }}
+                                </div>
+                                <!-- /.form-group -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                        {{ form_row(form.submit, {'attr': {'class': 'btn btn-block bg-gradient-danger'}}) }}
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>

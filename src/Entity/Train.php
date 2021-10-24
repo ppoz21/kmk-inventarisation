@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=TrainRepository::class)
+ * @ORM\HasLifecycleCallbacks
  */
 class Train
 {
@@ -43,7 +44,7 @@ class Train
     private $station;
 
     /**
-     * @ORM\OneToMany(targetEntity=TrainLog::class, mappedBy="Train")
+     * @ORM\OneToMany(targetEntity=TrainLog::class, mappedBy="Train", cascade={"persist", "remove"})
      */
     private $logs;
 

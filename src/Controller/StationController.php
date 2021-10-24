@@ -27,13 +27,13 @@ class StationController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function listAction(EntityManagerInterface $em, Environment $twig): Response
+    public function list(EntityManagerInterface $em, Environment $twig): Response
     {
         $station = new Station();
         $addForm = $this->createForm(AddStationFormType::class, $station);
         $stations = $em->getRepository(Station::class)->findAll();
 
-        return new Response($twig->render('pages/station-list/station-list.html.twig', [
+        return new Response($twig->render('pages/station/list.html.twig', [
             'stations' => $stations,
             'addForm' => $addForm->createView()
         ]));
@@ -44,14 +44,14 @@ class StationController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    public function detailsAction(EntityManagerInterface $em, Environment $twig, int $id, string $slug): Response
+    public function details(EntityManagerInterface $em, Environment $twig, int $id, string $slug): Response
     {
         $station = $em->getRepository(Station::class)->find($id);
         if ($station)
         {
             if ($slug == $station->getSlug())
             {
-                return new Response($twig->render('pages/station-details/station-details.html.twig', [
+                return new Response($twig->render('pages/station/details.html.twig', [
                     'station' => $station
                 ]));
             }
@@ -72,7 +72,7 @@ class StationController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function ajaxCreateFormAction(Request $request, EntityManagerInterface $em, Environment $twig): Response
+    public function ajaxCreateForm(Request $request, EntityManagerInterface $em, Environment $twig): Response
     {
         $id = $request->get('id');
         if ($id)
@@ -90,12 +90,12 @@ class StationController extends AbstractController
 
         $addForm = $this->createForm(AddStationFormType::class, $station);
 
-        return new Response($twig->render('parts/station-form/station-form.html.twig', [
+        return new Response($twig->render('pages/station/form.html.twig', [
             'addForm' => $addForm->createView()
         ]));
     }
 
-    public function ajaxAddStationAction(Request $request, APIKeyRepository $keyRepository, EntityManagerInterface $em): JsonResponse
+    public function ajaxAddStation(Request $request, APIKeyRepository $keyRepository, EntityManagerInterface $em): JsonResponse
     {
         $name = $request->get('name');
         $description = $request->get('description');

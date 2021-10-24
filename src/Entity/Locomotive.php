@@ -35,7 +35,7 @@ class Locomotive
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $owner;
+    private $owner = 'KMK Poznań';
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)

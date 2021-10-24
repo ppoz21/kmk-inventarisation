@@ -18,19 +18,19 @@ abstract class SlugUtil{
      *
      * @return array
      */
-    public static function splitSlug($slug, $separator = self::SLUG_SEPARATOR)
+    public static function splitSlug(string $slug, string $separator = self::SLUG_SEPARATOR)
     {
         return explode($separator, urldecode($slug));
     }
 
     /**
      * Generate slug based on given parts
-     * @param string|array $parts Array of parts or part to generate slug
+     * @param array|string $parts Array of parts or part to generate slug
      * @param string $separator Parts separator
      * @param string $suffix Slug suffix
      * @return string|bool False if input is invalid
      */
-    public static function generateSlug($parts, $separator = self::SLUG_SEPARATOR, $suffix = self::DOCUMENT_EXTENSION)
+    public static function generateSlug(array|string $parts, string $separator = self::SLUG_SEPARATOR, string $suffix = self::DOCUMENT_EXTENSION): bool|string
     {
         $slug = '';
         if (is_string($parts))

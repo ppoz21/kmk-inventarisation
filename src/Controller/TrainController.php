@@ -23,7 +23,7 @@ class TrainController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    public function landingAction(StationRepository $stationRepository, Environment $twig): Response
+    public function landing(StationRepository $stationRepository, Environment $twig): Response
     {
         if (count($stations = $this->getUser()->getStations()) == 1)
         {
@@ -36,7 +36,7 @@ class TrainController extends AbstractController
             $stations = $stationRepository->findAll();
         }
 
-        return new Response($twig->render('pages/train-landing/train-landing.html.twig', [
+        return new Response($twig->render('pages/train/landing.html.twig', [
             'stations' => $stations,
         ]));
     }
@@ -46,14 +46,14 @@ class TrainController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function stationAction(EntityManagerInterface $em, Environment $twig ,$id = 0, $slug = null): Response
+    public function station(EntityManagerInterface $em, Environment $twig ,$id = 0, $slug = null): Response
     {
         $station = $em->getRepository(Station::class)->find($id);
         if ($station)
         {
             if ($slug == $station->getSlug())
             {
-                return new Response($twig->render('pages/train-on-station/train-on-station.html.twig', [
+                return new Response($twig->render('pages/train/on-station.html.twig', [
                     'station' => $station,
                 ]));
             }
@@ -74,14 +74,14 @@ class TrainController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    public function detailsAction(EntityManagerInterface $em, Environment $twig, $id = 0, $slug = null): Response
+    public function details(EntityManagerInterface $em, Environment $twig, $id = 0, $slug = null): Response
     {
         $train = $em->getRepository(Train::class)->find($id);
         if ($train)
         {
             if ($slug == $train->getSlug())
             {
-                return new Response($twig->render('pages/train-details/train-details.html.twig', [
+                return new Response($twig->render('pages/train/details.html.twig', [
                     'train' => $train,
                 ]));
             }

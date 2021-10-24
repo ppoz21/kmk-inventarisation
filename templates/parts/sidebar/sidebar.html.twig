@@ -62,7 +62,7 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item has-treeview">
+                <li class="nav-item has-treeview {{ activeModel is defined ? 'menu-open' : '' }}">
                     <a href="javascript:void(0)" class="nav-link">
                         <i class="nav-icon fas fa-train"></i>
                         <p>
@@ -72,16 +72,33 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="javascript:void(0)" class="nav-link">
+                            <a href="{{ path('model_add') }}" class="nav-link {{ activeModelAdd is defined ? 'active' : '' }}">
                                 <i class="fas fa-plus-square nav-icon"></i>
                                 <p>Dodaj model</p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item has-treeview {{ activeModelList is defined ? 'menu-open' : '' }}">
                             <a href="javascript:void(0)" class="nav-link">
-                                <i class="far fa-edit nav-icon"></i>
-                                <p>Edytuj model</p>
+                                <i class="fas fa-list nav-icon"></i>
+                                <p>
+                                    Lista modeli
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
                             </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ path('model_list', {'type': 'lokomotywy'}) }}" class="nav-link {{ activeModelLoco is defined ? 'active' : '' }}">
+                                        <i class="fas fa-train nav-icon"></i>
+                                        <p>Lista lokomotyw</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ path('model_list', {'type': 'wagony'}) }}" class="nav-link {{ activeModelCar is defined ? 'active' : '' }}">
+                                        <i class="fas fa-trailer nav-icon"></i>
+                                        <p>Lista wagonów</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </li>

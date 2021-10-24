@@ -48,7 +48,7 @@ class Station
     private $slug;
 
     /**
-     * @ORM\OneToMany(targetEntity=StationLog::class, mappedBy="station")
+     * @ORM\OneToMany(targetEntity=StationLog::class, mappedBy="station", cascade={"persist", "remove"})
      */
     private $logs;
 
