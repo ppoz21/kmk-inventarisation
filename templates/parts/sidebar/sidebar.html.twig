@@ -30,7 +30,7 @@
                         </p>
                     </a>
                 </li>
-                {% if not is_granted('ROLE_NADZOR') %}
+                {% if (is_granted('ROLE_USER') and not is_granted('ROLE_NADZOR')) or is_granted('ROLE_ADMIN') %}
                     <li class="nav-item">
                         <a href="{{ path('todo_list') }}" class="nav-link {{ activeTodo is defined ? 'active' : '' }}">
                             <i class="nav-icon fas fa-calendar-check"></i>
