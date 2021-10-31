@@ -75,6 +75,77 @@ const mainConfig = {
     ]
 }
 
+const emailConfig = {
+    entry: {
+        main: './assets/emails/js/main.js',
+    },
+    output: {
+        path: path.resolve(__dirname, 'public/app/dist'),
+        filename: 'emails.js'
+    },
+    target: 'node',
+    devtool: 'source-map',
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                loader: 'babel-loader',
+            },
+            {
+                test: /\.scss$/,
+                use: [
+                    'style-loader',
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            esModule: false,
+                        },
+                    },
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            url: false,
+                            esModule: false,
+                            sourceMap: true
+                        },
+                    },
+                    'postcss-loader',
+                    {
+                        loader: 'sass-loader',
+                        options: {
+                            sourceMap: true,
+                            sassOptions: {
+                                outputStyle: "compressed",
+                            },
+                        }
+                    }
+                ]
+            },
+            {
+                test: /\.css$/i,
+                use: ['style-loader', {
+                    loader: 'css-loader',
+                    options: {
+                        importLoaders: 1,
+                    }
+                }, 'postcss-loader'],
+            },
+        ]
+    },
+    plugins: [
+        new CleanWebpackPlugin({cleanOnceBeforeBuildPatterns: ['public/app/dist']}),
+        new MiniCssExtractPlugin({
+            filename: 'emails.css',
+        }),
+        new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery'
+        })
+    ]
+}
+
 module.exports = [
-    mainConfig
+    mainConfig,
+    emailConfig
 ];

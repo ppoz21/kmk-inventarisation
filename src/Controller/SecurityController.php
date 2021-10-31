@@ -5,12 +5,18 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\ResetPasswordFormType;
 use Doctrine\ORM\EntityManagerInterface;
+use LogicException;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -43,7 +49,14 @@ class SecurityController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    public function forgetPassword(Request $request, UserPasswordHasherInterface $passwordEncoder, EntityManagerInterface $em, Environment $twig, string $hash = null): Response
+    public function forgetPassword(
+        Request $request,
+        UserPasswordHasherInterface $passwordEncoder,
+        EntityManagerInterface $em,
+        Environment $twig,
+        MailerInterface $mailer,
+        string $hash = null
+    ): Response
     {
         $error = null;
         $success = null;
@@ -100,15 +113,35 @@ class SecurityController extends AbstractController
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $email = $form->get('email')->getData();
-                $user = $this->em->getRepository(User::class)->findOneBy(['email' => $email]);
+                $user = $em->getRepository(User::class)->findOneBy(['email' => $email]);
                 if ($user) {
                     $user->setForgetPasswordHash();
                     $hash = $user->getForgetPasswordHash();
                     $success = 'Poprawnie wysłano e-mail z linkiem do zresetowania hasła';
-                    dump($hash);
                     $em->persist($user);
                     $em->flush();
-                    // TODO: Email z linkiem do resetu
+
+                    $resetPasswordUrl = $this->generateUrl('reset_password', ['hash' => $hash], UrlGeneratorInterface::ABSOLUTE_URL);
+
+                    $email = (new TemplatedEmail())
+                        ->from((new Address('kmk@ppoz21.pl', 'no-reply | kmk.ppoz21.pl')))
+                        ->to((new Address($user->getEmail(), $user->getName() . ' ' . $user->getSurname())))
+                        ->subject('Odzywkiwanie hasła | kmk.ppoz21.pl')
+                        ->htmlTemplate('mails/reset-password-mail.html.twig')
+                        ->context([
+                            'resetUrl' => $resetPasswordUrl
+                        ])
+                    ;
+
+                    try {
+                        $mailer->send($email);
+                    }
+                    catch (TransportExceptionInterface $e)
+                    {
+                        $success = null;
+                        $error = 'Wystąpił błąd podczas wysyłania wiadomości';
+                    }
+
                 } else {
                     $error = 'Nie znaleziono użytkownika z takim adresem e-mail!';
                 }
@@ -124,6 +157,6 @@ class SecurityController extends AbstractController
 
     public function logout()
     {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        throw new LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 }

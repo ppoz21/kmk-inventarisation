@@ -125,6 +125,6 @@ forget_password:
     path: /nie-pamietam-hasla
     controller: App\Controller\SecurityController::forgetPassword
 
-reser_password:
+reset_password:
     path: /resetuj-haslo/{hash}
     controller: App\Controller\SecurityController::forgetPassword

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ email.subject }}</title>
+</head>
+{% apply inline_css(source('@styles/emails.css')) %}
+<body>
+    <table>
+        <thead>
+        {% block header %}
+            <tr>
+                <th>
+                    <div>
+                        <img src="{{ email.image('@images/logo.png') }}" alt="KMK Logo">
+                        <h1>KMK Poznań - Serwis Inwentaryzacyjny</h1>
+                    </div>
+                </th>
+            </tr>
+        {% endblock %}
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    {% block content %}
+                    {% endblock %}
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+        {% block footer %}
+            <tr>
+                <td>
+                    <p>Wiadomość została wygenerowana automatycznie. Prosimy na nią nie odpowiadać.</p>
+                </td>
+            </tr>
+        {% endblock %}
+        </tfoot>
+    </table>
+</body>
+{% endapply %}
+</html>

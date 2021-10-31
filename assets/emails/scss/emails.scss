@@ -1,0 +1,164 @@
+html
+{
+
+  font-size: 16px;
+  width: 100%;
+
+}
+
+body
+{
+
+  width: 100%;
+  background-color: #e9ecef;
+
+  table
+  {
+
+    display: table;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+
+    thead
+    {
+      width: 100%;
+
+      tr
+      {
+
+        width: 100%;
+
+        th
+        {
+
+          background-color: #dc3545;
+
+          div
+          {
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 2rem;
+
+            img
+            {
+
+              max-height: 200px;
+              width: auto;
+              height: auto;
+
+            }
+
+            h1
+            {
+
+              font-size: 1.5rem;
+              color: #ffffff;
+              width: 100%;
+              display: block;
+
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+    tbody
+    {
+
+      width: 100%;
+
+      tr
+      {
+
+        width: 100%;
+
+        td
+        {
+
+          width: 100%;
+          background-color: #ffffff;
+
+          div
+          {
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 100%;
+            color: #495057;
+
+            p
+            {
+
+              width: 100%;
+              text-align: center;
+              margin: 0;
+              padding: 1em;
+
+            }
+
+            a
+            {
+
+              color: #dc3545;
+              text-decoration: underline;
+              text-transform: uppercase;
+
+            }
+
+          }
+
+        }
+
+      }
+
+
+    }
+
+    tfoot
+    {
+
+      width: 100%;
+
+      tr
+      {
+
+        width: 100%;
+
+        td
+        {
+
+          width: 100%;
+          background-color: #495057;
+
+          p
+          {
+
+            width: 100%;
+            color: #ffffff;
+            text-align: center;
+            font-size: .7rem;
+            padding: 1em;
+            margin: 0;
+
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+}

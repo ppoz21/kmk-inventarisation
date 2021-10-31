@@ -85,6 +85,9 @@
     "doctrine/sql-formatter": {
         "version": "1.1.1"
     },
+    "egulias/email-validator": {
+        "version": "3.1.2"
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.5"
     },
@@ -102,6 +105,9 @@
     },
     "laminas/laminas-code": {
         "version": "4.4.2"
+    },
+    "lorenzo/pinky": {
+        "version": "1.0.5"
     },
     "monolog/monolog": {
         "version": "2.3.2"
@@ -144,6 +150,9 @@
         "files": [
             "bin/console"
         ]
+    },
+    "symfony/css-selector": {
+        "version": "v5.3.4"
     },
     "symfony/debug-bundle": {
         "version": "4.1",
@@ -230,6 +239,18 @@
     "symfony/intl": {
         "version": "v5.3.7"
     },
+    "symfony/mailer": {
+        "version": "4.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.3",
+            "ref": "bbfc7e27257d3a3f12a6fb0a42540a42d9623a37"
+        },
+        "files": [
+            "config/packages/mailer.yaml"
+        ]
+    },
     "symfony/maker-bundle": {
         "version": "1.0",
         "recipe": {
@@ -238,6 +259,9 @@
             "version": "1.0",
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
+    },
+    "symfony/mime": {
+        "version": "v5.3.8"
     },
     "symfony/monolog-bridge": {
         "version": "v5.3.7"
@@ -267,6 +291,9 @@
         "version": "v1.23.1"
     },
     "symfony/polyfill-intl-icu": {
+        "version": "v1.23.0"
+    },
+    "symfony/polyfill-intl-idn": {
         "version": "v1.23.0"
     },
     "symfony/polyfill-intl-normalizer": {
@@ -400,8 +427,17 @@
     "symfony/yaml": {
         "version": "v5.3.6"
     },
+    "tijsverkoyen/css-to-inline-styles": {
+        "version": "2.2.3"
+    },
+    "twig/cssinliner-extra": {
+        "version": "v3.3.3"
+    },
     "twig/extra-bundle": {
         "version": "v3.3.1"
+    },
+    "twig/inky-extra": {
+        "version": "v3.3.3"
     },
     "twig/intl-extra": {
         "version": "v3.3.0"
