@@ -44,7 +44,7 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             {{ form_label(form.email) }}
-                                            {{ form_widget(form.email, {'attr': {'class':  form.email.vars.errors ? 'form-control error' : 'form-control'}}) }}
+                                            {{ form_widget(form.email, {'attr': {'class':  form.email.vars.errors | length > 0 ? 'form-control error' : 'form-control'}}) }}
                                             {% if form.email.vars.errors %}
                                                 {% for error in form.email.vars.errors %}
                                                     <p class="text-danger text-sm-center">{{ error.message }}</p>
@@ -56,7 +56,7 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             {{ form_label(form.name) }}
-                                            {{ form_widget(form.name, {'attr': {'class': form.name.vars.errors ? 'form-control error' : 'form-control'}}) }}
+                                            {{ form_widget(form.name, {'attr': {'class': form.name.vars.errors | length > 0 ? 'form-control error' : 'form-control'}}) }}
                                             {% if form.name.vars.errors %}
                                                 {% for error in form.name.vars.errors %}
                                                     <p class="text-danger text-sm-center">{{ error.message }}</p>
@@ -68,7 +68,7 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             {{ form_label(form.surname) }}
-                                            {{ form_widget(form.surname, {'attr': {'class': form.surname.vars.errors ? 'form-control error' : 'form-control'}}) }}
+                                            {{ form_widget(form.surname, {'attr': {'class': form.surname.vars.errors | length > 0 ? 'form-control error' : 'form-control'}}) }}
                                             {% if form.surname.vars.errors %}
                                                 {% for error in form.surname.vars.errors %}
                                                     <p class="text-danger text-sm-center">{{ error.message }}</p>
@@ -80,7 +80,7 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             {{ form_label(form.phone) }}
-                                            {{ form_widget(form.phone, {'attr': {'class': form.phone.vars.errors ? 'form-control error' : 'form-control'}}) }}
+                                            {{ form_widget(form.phone, {'attr': {'class': form.phone.vars.errors | length > 0 ? 'form-control error' : 'form-control'}}) }}
                                             {% if form.phone.vars.errors %}
                                                 {% for error in form.phone.vars.errors %}
                                                     <p class="text-danger text-sm-center">{{ error.message }}</p>
