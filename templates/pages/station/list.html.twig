@@ -52,9 +52,11 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-header">
-                            <button type="button" class="btn btn-block bg-gradient-success" id="addStation">Dodaj stację</button>
-                        </div>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <div class="card-header">
+                                <button type="button" class="btn btn-block bg-gradient-success" id="addStation">Dodaj stację</button>
+                            </div>
+                        {% endif %}
                         <div class="card-body">
                             <table id="listaStacji" class="table table-bordered table-hover">
                                 <thead>
@@ -88,7 +90,9 @@
                                             </td>
                                             <td class="text-center">
                                                 <a href="{{ path('station_details', {'id': station.id, 'slug': station.slug}) }}" class="text-danger"><i class="fas fa-eye"></i></a>
-                                                <a href="javascript:void(0)" class="text-danger edit-station" data-id="{{ station.id }}"><i class="fas fa-edit"></i></a>
+                                                {% if is_granted('ROLE_ADMIN') %}
+                                                    <a href="javascript:void(0)" class="text-danger edit-station" data-id="{{ station.id }}"><i class="fas fa-edit"></i></a>
+                                                {% endif %}
                                             </td>
                                         </tr>
                                     {% endfor %}

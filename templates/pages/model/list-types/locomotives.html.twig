@@ -42,7 +42,11 @@
                                         <td>{{ loco.owner }}</td>
                                         <td>{{ loco.comments }}</td>
                                         <td class="text-center">
-                                            <a href="{{ path('model_edit_type', {'id': loco.id, 'type': 'lokomotywa'}) }}" class="text-danger"><i class="fas fa-edit"></i></a>
+                                            {% if is_granted('ROLE_MIKOL') %}
+                                                <a href="{{ path('model_edit_type', {'id': loco.id, 'type': 'lokomotywa'}) }}" class="text-danger"><i class="fas fa-edit"></i></a>
+                                            {% else %}
+                                                <span class="text-danger text-uppercase">BRAK UPRAWNIEŃ</span>
+                                            {% endif %}
                                         </td>
                                     </tr>
                                 {% endfor %}

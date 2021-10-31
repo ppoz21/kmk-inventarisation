@@ -16,3 +16,15 @@ label
   }
 
 }
+
+input
+{
+
+  &.error
+  {
+
+    border-color: #dc3545;
+
+  }
+
+}

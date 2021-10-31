@@ -93,29 +93,32 @@
                                             </thead>
                                             <tbody>
                                             {% if station.trains|length < 1 %}
-                                            <tr>
-                                                <td colspan="4" class="text-center">Do stacji nie przypisano składów!</td>
+                                                <tr>
+                                                    <td colspan="4" class="text-center">Do stacji nie przypisano składów!</td>
+                                                </tr>
                                                 {% else %}
                                                     {% for train in station.trains %}
-                                                        <td>{{ loop.index }}</td>
-                                                        <td><a href="{{ path('train_details', {'id': train.id, 'slug': train.slug}) }}">{{ train.locomotive.typeAndNumber }}</a></td>
-                                                        <td>{{ train.locomotive.painting }}</td>
-                                                        <td>
-                                                            {% if train.cars | length < 1 %}
-                                                                Skład nie ma przypisanych wagonów!
-                                                            {% else %}
-                                                                <table class="table table-bordered table-hover">
-                                                                    <tbody>
-                                                                    {% for car in train.cars %}
-                                                                        <tr>
-                                                                            <td>{{ car.type }} {{ car.number }}</td>
-                                                                            <td>{{ car.comments }}</td>
-                                                                        </tr>
-                                                                    {% endfor %}
-                                                                    </tbody>
-                                                                </table>
-                                                            {% endif %}
-                                                        </td>
+                                                        <tr>
+                                                            <td>{{ loop.index }}</td>
+                                                            <td><a href="{{ path('train_details', {'id': train.id, 'slug': train.slug}) }}">{{ train.locomotive.typeAndNumber }}</a></td>
+                                                            <td>{{ train.locomotive.painting }}</td>
+                                                            <td>
+                                                                {% if train.cars | length < 1 %}
+                                                                    Skład nie ma przypisanych wagonów!
+                                                                {% else %}
+                                                                    <table class="table table-bordered table-hover">
+                                                                        <tbody>
+                                                                        {% for car in train.cars %}
+                                                                            <tr>
+                                                                                <td>{{ car.type }} {{ car.number }}</td>
+                                                                                <td>{{ car.comments }}</td>
+                                                                            </tr>
+                                                                        {% endfor %}
+                                                                        </tbody>
+                                                                    </table>
+                                                                {% endif %}
+                                                            </td>
+                                                        </tr>
                                                     {% endfor %}
                                                 {% endif %}
                                             </tbody>

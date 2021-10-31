@@ -68,7 +68,9 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     {{ form_label(form.train.station) }}
-                                    {{ form_widget(form.train.station, {'attr': {'class': 'form-control select2 select2-danger'}}) }}
+                                    <div class="select2-danger">
+                                        {{ form_widget(form.train.station, {'attr': {'class': 'form-control select2', "data-dropdown-css-class": "select2-danger"}}) }}
+                                    </div>
                                 </div>
                                 <!-- /.form-group -->
                             </div>

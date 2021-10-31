@@ -34,7 +34,7 @@
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
-                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_PREZES') %}
+                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_NADZOR') %}
                     <!-- Small boxes (Stat box) -->
                     <div class="row">
                         <div class="col-lg-3 col-6">
@@ -93,7 +93,7 @@
                                 <div class="icon">
                                     <i class="fas fa-clipboard-list"></i>
                                 </div>
-                                <a href="#" class="small-box-footer">Zobacz dokonane inwentaryzacje <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="#" class="small-box-footer">Zobacz inwentaryzacje <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                         <!-- ./col -->
@@ -103,52 +103,54 @@
                 <!-- Main row -->
                 <div class="row">
                     <!-- Left col -->
-                    <section class="col-lg-7 connectedSortable">
-                        {% if not is_granted('ROLE_ADMIN') %}
-                            <div class="callout callout-danger">
-                                <h5><i class="fas fa-info"></i> Uwaga:</h5>
-                                Zadania oznaczone kolorem czerwonym są przydzielone przez Administratora. Nie mozesz oznaczyć ich jako wykonane!
-                            </div>
-                        {% endif %}
-                        <!-- TO DO List -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">
-                                    <i class="fas fa-calendar-check mr-1"></i>
-                                    Twoje zadania
-                                </h3>
-                            </div>
-                            <div class="card-body">
-                                <ul class="todo-list" data-widget="todo-list">
-                                    {% if todos | length < 1 %}
-                                        <span class="text-center">Brak zadań do wykonania!</span>
-                                    {% endif %}
-                                    {% for todo in todos %}
-                                        <li>
-                                            <!-- todo text -->
-                                            <span class="text {{ todo.addedByAdmin?'text-danger' }}">{{ todo.title }}</span>
+                    {% if (is_granted('ROLE_USER') and not is_granted('ROLE_NADZOR')) or is_granted('ROLE_ADMIN') %}
+                        <section class="col-lg-7 connectedSortable">
+                            {% if not is_granted('ROLE_ADMIN') %}
+                                <div class="callout callout-danger">
+                                    <h5><i class="fas fa-info"></i> Uwaga:</h5>
+                                    Zadania oznaczone kolorem czerwonym są przydzielone przez Administratora. Nie mozesz oznaczyć ich jako wykonane!
+                                </div>
+                            {% endif %}
+                            <!-- TO DO List -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">
+                                        <i class="fas fa-calendar-check mr-1"></i>
+                                        Twoje zadania
+                                    </h3>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="todo-list" data-widget="todo-list">
+                                        {% if todos | length < 1 %}
+                                            <span class="text-center">Brak zadań do wykonania!</span>
+                                        {% endif %}
+                                        {% for todo in todos %}
+                                            <li>
+                                                <!-- todo text -->
+                                                <span class="text {{ todo.addedByAdmin?'text-danger' }}">{{ todo.title }}</span>
 
-                                            {% if todo.deadline %}
-                                                <small class="badge badge-info"><i class="far fa-clock"></i> {{ todo.deadline | format_datetime('short', 'none', locale='pl') }}</small>
-                                            {% endif %}
+                                                {% if todo.deadline %}
+                                                    <small class="badge badge-info"><i class="far fa-clock"></i> {{ todo.deadline | format_datetime('short', 'none', locale='pl') }}</small>
+                                                {% endif %}
 
-                                            <small class="badge badge-secondary"><i class="fas fa-users"></i>&nbsp;
-                                                {% for user in todo.user %}
-                                                    {{ user }}{% if not loop.last %},&nbsp;{% endif %}
-                                                {% endfor %}
-                                            </small>
+                                                <small class="badge badge-secondary"><i class="fas fa-users"></i>&nbsp;
+                                                    {% for user in todo.user %}
+                                                        {{ user }}{% if not loop.last %},&nbsp;{% endif %}
+                                                    {% endfor %}
+                                                </small>
 
-                                            <!-- General tools such as edit or delete-->
-                                            <div class="tools">
-                                                <a class="fas fa-eye show-task" data-title="{{ todo.title }}" data-description="{{ todo.description }}" title="Szczegóły"></a>
-                                            </div>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
+                                                <!-- General tools such as edit or delete-->
+                                                <div class="tools">
+                                                    <a class="fas fa-eye show-task" data-title="{{ todo.title }}" data-description="{{ todo.description }}" title="Szczegóły"></a>
+                                                </div>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-                        <!-- /.card -->
-                    </section>
+                            <!-- /.card -->
+                        </section>
+                    {% endif %}
                     <!-- /.Left col -->
                     <!-- right col (We are only adding the ID to make the widgets sortable)-->
                     <section class="col-lg-5 connectedSortable">
@@ -160,15 +162,108 @@
                                 </h3>
                             </div>
                             <div class="card-body">
-                                <p>
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Zakres uprawnień</th>
+                                        <th scope="col">Uprawnienia</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
                                     {% if is_granted('ROLE_ADMIN') %}
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci alias aperiam dignissimos dolorem error esse ex facere iste iure nihil obcaecati, perferendis quaerat recusandae reiciendis, saepe sint sit velit voluptas!
-                                    {% elseif is_granted('ROLE_PREZES') %}
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid aperiam asperiores assumenda beatae debitis eligendi ex exercitationem facere illo illum, laborum nisi quasi quisquam repudiandae, sed sequi sit vel voluptate!
-                                    {% else %}
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae blanditiis doloremque ea earum eligendi eveniet explicabo illum ipsum iure laborum necessitatibus nobis odio, officia quasi repellendus? Cupiditate iste odit reprehenderit?
+                                        <tr>
+                                            <th colspan="2" class="text-center">Uprawnienia Administrator</th>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" rowspan="2" style="vertical-align: middle">Zadania</th>
+                                            <td>Dodawanie zadań dla Użytkowników</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Przegląd Listy Zadań Użytkowników</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" rowspan="3" style="vertical-align: middle">Stacje</th>
+                                            <td>Dodawanie nowych Stacji</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Edycja Stacji</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Przypisywanie użytkowników do Stacji</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" rowspan="3" style="vertical-align: middle">Administracja</th>
+                                            <td>Tworzenie kont użytkowników</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Blokowanie kont użytkowników</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Usuwanie kont użytkowników</td>
+                                        </tr>
                                     {% endif %}
-                                </p>
+                                    {% if is_granted('ROLE_MIKOL') %}
+                                        <tr>
+                                            <th colspan="2" class="text-center">Uprawnienia Mikol</th>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" rowspan="2" style="vertical-align: middle">Modele</th>
+                                            <td>Dodawanie Modeli</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Przypisywanie Modeli do Stacji</td>
+                                        </tr>
+                                    {% endif %}
+                                    {% if is_granted('ROLE_NADZOR') %}
+                                        <tr>
+                                            <th colspan="2" class="text-center">Uprawnienia Nadzór</th>
+                                        </tr>
+{#                                        <tr>#} {# TODO: Future feature #}
+{#                                            <th scope="row" style="vertical-align: middle">Inwentaryzacje</th>#}
+{#                                            <td>Przegląd dokonanych inwentaryzacji</td>#}
+{#                                        </tr>#}
+                                        <tr>
+                                            <th scope="row" style="vertical-align: middle">Członkowie Klubu</th>
+                                            <td>Dostęp do Listy Członków Klubu</td>
+                                        </tr>
+                                    {% endif %}
+                                    {% if (is_granted('ROLE_USER') and not is_granted('ROLE_NADZOR')) or is_granted('ROLE_ADMIN') %}
+                                        <tr>
+                                            <th colspan="2" class="text-center">Uprawnienia Użytkownik</th>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" rowspan="2" style="vertical-align: middle">Zadania</th>
+                                            <td>Przegląd własnej Listy Zadań</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dodawanie własnych zadań</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" rowspan="1" style="vertical-align: middle">Składy</th>
+                                            <td>Dostęp do Listy Składów na Stacjach</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" rowspan="1" style="vertical-align: middle">Stacje</th>
+                                            <td>Dostęp do Listy Stacji</td>
+                                        </tr>
+{#                                        <tr>#} {# TODO: Future feature #}
+{#                                            <th scope="row" rowspan="1" style="vertical-align: middle">Inwentaryzacja</th>#}
+{#                                            <td>Wykonywanie inwentaryzacji</td>#}
+{#                                        </tr>#}
+                                        <tr>
+                                            <th scope="row" rowspan="2" style="vertical-align: middle">Modele</th>
+                                            <td>Dostęp do Listy Lokomotyw</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dostęp do Listy Wagonów</td>
+                                        </tr>
+{#                                        <tr>#} {# TODO: Future feature #}
+{#                                            <th scope="row" rowspan="1" style="vertical-align: middle">Ustawienia</th>#}
+{#                                            <td>Zmiana danych Konta Użytkownika</td>#}
+{#                                        </tr>#}
+                                    {% endif %}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </section>

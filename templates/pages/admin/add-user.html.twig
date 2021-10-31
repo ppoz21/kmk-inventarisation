@@ -1,0 +1,136 @@
+{% extends 'layout/main-layout.html.twig' %}
+
+{% set activeAdmin = true %}
+{% set activeAdminAdd = true %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+    <style>
+        .select2-container--default .select2-selection--single
+        {
+            height: fit-content;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Dodaj użytkownika</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item">Administracja</li>
+                            <li class="breadcrumb-item active">Dodaj użytkownika</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            {{ form_start(form) }}
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            {{ form_label(form.email) }}
+                                            {{ form_widget(form.email, {'attr': {'class':  form.email.vars.errors ? 'form-control error' : 'form-control'}}) }}
+                                            {% if form.email.vars.errors %}
+                                                {% for error in form.email.vars.errors %}
+                                                    <p class="text-danger text-sm-center">{{ error.message }}</p>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </div>
+                                        <!-- /.form-group -->
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            {{ form_label(form.name) }}
+                                            {{ form_widget(form.name, {'attr': {'class': form.name.vars.errors ? 'form-control error' : 'form-control'}}) }}
+                                            {% if form.name.vars.errors %}
+                                                {% for error in form.name.vars.errors %}
+                                                    <p class="text-danger text-sm-center">{{ error.message }}</p>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </div>
+                                        <!-- /.form-group -->
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            {{ form_label(form.surname) }}
+                                            {{ form_widget(form.surname, {'attr': {'class': form.surname.vars.errors ? 'form-control error' : 'form-control'}}) }}
+                                            {% if form.surname.vars.errors %}
+                                                {% for error in form.surname.vars.errors %}
+                                                    <p class="text-danger text-sm-center">{{ error.message }}</p>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </div>
+                                        <!-- /.form-group -->
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            {{ form_label(form.phone) }}
+                                            {{ form_widget(form.phone, {'attr': {'class': form.phone.vars.errors ? 'form-control error' : 'form-control'}}) }}
+                                            {% if form.phone.vars.errors %}
+                                                {% for error in form.phone.vars.errors %}
+                                                    <p class="text-danger text-sm-center">{{ error.message }}</p>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </div>
+                                        <!-- /.form-group -->
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            {{ form_label(form.stations) }}
+                                            <div class="select2-danger">
+                                                {{ form_widget(form.stations, {'attr': {'class': 'select2', "data-dropdown-css-class": "select2-danger", "style": "width: 100%"}}) }}
+                                            </div>
+                                        </div>
+                                        <!-- /.form-group -->
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            {{ form_label(form.roles) }}
+                                            <div class="select2-danger">
+                                                {{ form_widget(form.roles, {'attr': {'class': 'select2', "data-dropdown-css-class": "select2-danger", "style": "width: 100%"}}) }}
+                                            </div>
+                                            {{ form_help(form.roles) }}
+                                        </div>
+                                        <!-- /.form-group -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                            <div class="card-footer">
+                                {{ form_row(form.submit, {'attr': {'class': 'btn btn-block bg-gradient-danger'}}) }}
+                            </div>
+                            {{ form_end(form) }}
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        window.initAdminAdd();
+    </script>
+{% endblock %}

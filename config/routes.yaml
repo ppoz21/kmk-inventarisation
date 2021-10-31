@@ -128,3 +128,9 @@ forget_password:
 reset_password:
     path: /resetuj-haslo/{hash}
     controller: App\Controller\SecurityController::forgetPassword
+
+# administration
+
+add_user:
+    path: /administracja/dodaj-uzytkownika
+    controller: App\Controller\AdminController::addUser

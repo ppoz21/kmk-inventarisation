@@ -1,0 +1,20 @@
+{% extends 'mails/mail-layout.html.twig' %}
+
+{% block content %}
+    <div>
+        <h2>
+            Witamy na pokładzie!
+        </h2>
+        <p>
+            Witaj {{ email.toName }}!
+            <br>
+            <br>
+            Dla twojego adresu e-mail utworzono konto w Serwisie Inwentaryzaji KMK Poznań
+            <br>
+            Aby utworzyć hasło kliknij <a href="{{ resetUrl }}">[tutaj]</a>.
+            <br>
+            <br>
+            Jeżeli uważasz, że ta wiadomość to błąd napisz do nas na adres <a href="mailto:kmk@kmk.ppoz21.pl">kmk@ppoz21.pl</a>
+        </p>
+    </div>
+{% endblock %}

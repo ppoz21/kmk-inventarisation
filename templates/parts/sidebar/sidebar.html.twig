@@ -30,14 +30,16 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ path('todo_list') }}" class="nav-link {{ activeTodo is defined ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-calendar-check"></i>
-                        <p>
-                            Zadania
-                        </p>
-                    </a>
-                </li>
+                {% if not is_granted('ROLE_NADZOR') %}
+                    <li class="nav-item">
+                        <a href="{{ path('todo_list') }}" class="nav-link {{ activeTodo is defined ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-calendar-check"></i>
+                            <p>
+                                Zadania
+                            </p>
+                        </a>
+                    </li>
+                {% endif %}
                 <li class="nav-item">
                     <a href="{{ path('train_landing') }}" class="nav-link {{ activeTrain is defined ? 'active' : '' }}">
                         <i class="nav-icon fas fa-subway"></i>
@@ -54,14 +56,14 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="javascript:void(0)" class="nav-link">
-                        <i class="nav-icon fas fa-clipboard"></i>
-                        <p>
-                            Inwentaryzacja
-                        </p>
-                    </a>
-                </li>
+{#                <li class="nav-item">#} {# TODO: Future feature #}
+{#                    <a href="javascript:void(0)" class="nav-link">#}
+{#                        <i class="nav-icon fas fa-clipboard"></i>#}
+{#                        <p>#}
+{#                            Inwentaryzacja#}
+{#                        </p>#}
+{#                    </a>#}
+{#                </li>#}
                 <li class="nav-item has-treeview {{ activeModel is defined ? 'menu-open' : '' }}">
                     <a href="javascript:void(0)" class="nav-link">
                         <i class="nav-icon fas fa-train"></i>
@@ -71,12 +73,14 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ path('model_add') }}" class="nav-link {{ activeModelAdd is defined ? 'active' : '' }}">
-                                <i class="fas fa-plus-square nav-icon"></i>
-                                <p>Dodaj model</p>
-                            </a>
-                        </li>
+                        {% if is_granted('ROLE_MIKOL') %}
+                            <li class="nav-item">
+                                <a href="{{ path('model_add') }}" class="nav-link {{ activeModelAdd is defined ? 'active' : '' }}">
+                                    <i class="fas fa-plus-square nav-icon"></i>
+                                    <p>Dodaj model</p>
+                                </a>
+                            </li>
+                        {% endif %}
                         <li class="nav-item has-treeview {{ activeModelList is defined ? 'menu-open' : '' }}">
                             <a href="javascript:void(0)" class="nav-link">
                                 <i class="fas fa-list nav-icon"></i>
@@ -102,14 +106,15 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a href="javascript:void(0)" class="nav-link">
-                        <i class="nav-icon fas fa-clipboard-list"></i>
-                        <p>
-                            Dokonane inwentaryzacje
-                        </p>
-                    </a>
-                </li>
+{#                <li class="nav-item">#} {# TODO: Future feature #}
+{#                    <a href="javascript:void(0)" class="nav-link">#}
+{#                        <i class="nav-icon fas fa-clipboard-list"></i>#}
+{#                        <p>#}
+{#                            Dokonane inwentaryzacje#}
+{#                        </p>#}
+{#                    </a>#}
+{#                </li>#}
+                {% if is_granted('ROLE_NADZOR') %}
                 <li class="nav-item">
                     <a href="{{ path('members_list') }}" class="nav-link {{ membersActive is defined ? 'active' : '' }}">
                         <i class="nav-icon fas fa-users"></i>
@@ -118,43 +123,47 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item has-treeview">
-                    <a href="javascript:void(0)" class="nav-link">
-                        <i class="nav-icon fas fa-user-cog"></i>
-                        <p>
-                            Administracja
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="javascript:void(0)" class="nav-link">
-                                <i class="fas fa-user-plus nav-icon"></i>
-                                <p>Dodaj użytkownika</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="javascript:void(0)" class="nav-link">
-                                <i class="fas fa-user-times nav-icon"></i>
-                                <p>Zablokuj użytkownika</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="javascript:void(0)" class="nav-link">
-                                <i class="fas fa-user-minus nav-icon"></i>
-                                <p>Usuń użytkownika</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="javascript:void(0)" class="nav-link">
-                        <i class="nav-icon fas fa-cogs"></i>
-                        <p>
-                            Ustawienia
-                        </p>
-                    </a>
-                </li>
+                {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item has-treeview {{ activeAdmin is defined ? 'menu-open' : '' }}">
+                        <a href="javascript:void(0)" class="nav-link">
+                            <i class="nav-icon fas fa-user-cog"></i>
+                            <p>
+                                Administracja
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ path('add_user') }}" class="nav-link {{ activeAdminAdd is defined ? 'active' : '' }}">
+                                    <i class="fas fa-user-plus nav-icon"></i>
+                                    <p>Dodaj użytkownika</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="javascript:void(0)" class="nav-link {{ activeAdminBlock is defined ? 'active' : '' }}">
+                                    <i class="fas fa-user-times nav-icon"></i>
+                                    <p>Zablokuj użytkownika</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="javascript:void(0)" class="nav-link {{ activeAdminRemove is defined ? 'active' : '' }}">
+                                    <i class="fas fa-user-minus nav-icon"></i>
+                                    <p>Usuń użytkownika</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+
+{#                <li class="nav-item">#} {# TODO: Future feature #}
+{#                    <a href="javascript:void(0)" class="nav-link">#}
+{#                        <i class="nav-icon fas fa-cogs"></i>#}
+{#                        <p>#}
+{#                            Ustawienia#}
+{#                        </p>#}
+{#                    </a>#}
+{#                </li>#}
                 <li class="nav-item">
                     <a href="{{ path('app_logout') }}" class="nav-link">
                         <i class="nav-icon fas fa-sign-out-alt"></i>

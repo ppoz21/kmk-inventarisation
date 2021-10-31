@@ -33,7 +33,9 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     {{ form_label(form.type) }}
-                                    {{ form_widget(form.type, {'attr': {'class': 'form-control select2 select2-danger'}}) }}
+                                    <div class="select2-danger">
+                                        {{ form_widget(form.type, {'attr': {'class': 'form-control select2 select2-danger', "data-dropdown-css-class": "select2-danger"}}) }}
+                                    </div>
                                 </div>
                                 <!-- /.form-group -->
                             </div>
@@ -54,7 +56,9 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     {{ form_label(form.train) }}
-                                    {{ form_widget(form.train, {'attr': {'class': 'form-control select2 select2-danger'}}) }}
+                                    <div class="select2-danger">
+                                        {{ form_widget(form.train, {'attr': {'class': 'form-control select2', "data-dropdown-css-class": "select2-danger"}}) }}
+                                    </div>
                                 </div>
                                 <!-- /.form-group -->
                             </div>

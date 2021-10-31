@@ -97,7 +97,11 @@
                                                         {% endfor %}
                                                     </td>
                                                     <td>
-                                                        <a href="{{ path('todo_list_user', {'id': member.id, 'slug': member.slug}) }}"><i class="fas fa-calendar-check"></i></a>
+                                                        {% if is_granted('ROLE_ADMIN') %}
+                                                            <a href="{{ path('todo_list_user', {'id': member.id, 'slug': member.slug}) }}"><i class="fas fa-calendar-check"></i></a>
+                                                        {% else %}
+                                                            <span class="text-danger text-uppercase">Brak uprawnień</span>
+                                                        {% endif %}
                                                     </td>
                                                 </tr>
                                             {% endfor %}
