@@ -37,6 +37,9 @@ train_landing:
 train_on_station:
     path: /sklady/stacje/{slug}-s{id}
     controller: App\Controller\TrainController::station
+    requirements:
+        slug: .*
+        id: \d+
 
 train_details:
     path: /sklady/{slug}-sk-{id}
