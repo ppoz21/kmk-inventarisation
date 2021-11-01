@@ -43,6 +43,7 @@ train_details:
     controller: App\Controller\TrainController::details
     requirements:
         slug: .*
+        id: \d+
 
 # todolist
 
